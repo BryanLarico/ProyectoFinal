@@ -1,0 +1,57 @@
+<!--<div style="text-align: center;">
+  <h1>Sign Up</h1>
+  <input [(ngModel)]="register.username" placeholder="Username"><br>
+  <input [(ngModel)]="register.password" type="password" placeholder="Password"><br>
+  <input [(ngModel)]= "register.email" placeholder="Email"><br>
+  <button (click)="registerUser()">Register User</button>
+</div>-->
+
+<div class="container">
+  <div class="header">
+    <img src="/assets/logotrack.png" alt="Logo" class="logo">
+    <h1 class="title">
+      <span class="title-text">Tracking</span><span class="title-symbol">()</span>
+    </h1>
+    <h2 class="subtitle">Registro</h2>
+  </div>
+  <p class="description">Completa los campos para crear una cuenta</p>
+  <div class="register-form">
+    <input [(ngModel)]="register.username" placeholder="Username" class="input-field"><br>
+    <input [(ngModel)]="register.password" type="password" placeholder="Password" class="input-field"><br>
+    <input [(ngModel)]="register.email" placeholder="Email" class="input-field"><br>
+    <input [(ngModel)]="register.semester" placeholder="Semestre" class="input-field"><br>
+    <input [(ngModel)]="register.name" placeholder="Nombre Completo" class="input-field"><br>
+    <input [(ngModel)]="register.dni" placeholder="DNI" class="input-field"><br>
+
+    <button (click)="registerUser()" class="register-button">Registarse</button>
+    <a href="../login" class="login-link">Iniciar Sesión</a>
+  </div>
+</div>
+<footer class="pie-pagina">
+  <div class="grupo-1">
+      <div class="box">
+          <figure>
+              <a href="#">
+                  <img src="/assets/LogoUnsa.png" alt="Logo UnsaShop">
+              </a>
+          </figure>
+      </div>
+      <div class="box">
+          <h2>SOBRE NOSOTROS</h2>
+          <p><b>Somos Estudiantes de La Universidad Nacional de San Agustín de Arequipa - Perú, cursando el tercer semestre de la carrera de Ingeniería de sistemas</b></p>
+      </div>
+      <div class="box">
+          <h2>SIGUENOS</h2>
+          <div class="red-social">
+            <a href="https://facebook.com" class="fab fa-facebook" target="_blank" aria-label="Facebook"></a>
+            <a href="https://instagram.com" class="fab fa-instagram" target="_blank" aria-label="Instagram"></a>
+            <a href="https://twitter.com/UChop42973" class="fab fa-twitter" target="_blank" aria-label="Twitter"></a>
+            <a href="https://www.youtube.com/channel/UC4fAfHG6sk1eTMGC-esHUxA" class="fab fa-youtube" target="_blank" aria-label="YouTube"></a>
+        </div>
+      </div>
+
+  </div>
+  <div class="grupo-2">
+      <small>&copy; 2024 <b>Tracking()</b> - Todo los Derechos Reservados</small>
+  </div>
+</footer>

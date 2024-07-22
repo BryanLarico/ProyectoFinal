@@ -1,0 +1,193 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilo global */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #003366;
+  color: white;
+  text-align: center;
+}
+
+/* Contenedor principal */
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 50px; /* Añadido margen inferior para el espacio entre el contenedor y el footer */
+}
+
+/* Header con logo y título */
+.header {
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 100px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 36px;
+  font-weight: bold;
+  color: black;
+  margin: 10px 0;
+}
+
+.title-text {
+  color: black;
+}
+
+.title-symbol {
+  color: yellow;
+}
+
+/* Texto descriptivo */
+.description {
+  color: #999;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+/* Enlace de acceso */
+.access-link {
+  color: #003366;
+  text-decoration: none;
+  font-size: 16px;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.access-link:hover {
+  text-decoration: underline;
+}
+
+/* Estilo del formulario de inicio de sesión */
+.login-form {
+  margin-bottom: 30px; /* Ajuste del margen inferior para crear espacio adicional */
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #003366;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.login-button, .register-button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.login-button {
+  background-color: #003366;
+  color: white;
+}
+
+.login-button:hover {
+  background-color: #002244;
+}
+
+.register-button {
+  background-color: #0066cc;
+  color: white;
+}
+
+.register-button:hover {
+  background-color: #005bb5;
+}
+
+/*pie de pagina*/
+.pie-pagina {
+  width: 100%;
+  background-color: #003366; /* Azul oscuro */
+  color: #fff;
+}
+
+/* Grupo 1: Contenido principal del pie de página */
+.pie-pagina .grupo-1 {
+  max-width: 1200px;
+  margin: auto;
+  padding: 30px 20px; /* Ajuste de padding para mejorar la altura */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px; /* Ajuste del espacio entre columnas */
+}
+
+/* Estilo de las imágenes en el grupo 1 */
+.pie-pagina .grupo-1 .box figure {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pie-pagina .grupo-1 .box figure img {
+  width: 100px; /* Ajuste del tamaño de las imágenes */
+}
+
+/* Títulos y párrafos en el grupo 1 */
+.pie-pagina .grupo-1 .box h2 {
+  color: #fff;
+  margin-bottom: 15px;
+  font-size: 22px; /* Ajuste del tamaño de fuente */
+}
+
+.pie-pagina .grupo-1 .box p {
+  color: #dcdcdc; /* Gris claro para el texto */
+  margin-bottom: 10px;
+}
+
+/* Estilo de los enlaces en redes sociales */
+.red-social {
+  display: flex;
+  justify-content: center;
+  gap: 15px; /* Espacio entre los iconos */
+}
+
+.red-social a {
+  font-size: 24px; /* Tamaño de los iconos */
+  color: #fff; /* Color de los iconos */
+  text-decoration: none; /* Sin subrayado */
+  transition: color 0.3s ease;
+}
+
+.red-social a:hover {
+  color: #f39c12; /* Color al pasar el cursor */
+}
+
+/* Grupo 2: Información de derechos reservados */
+.pie-pagina .grupo-2 {
+  background-color: #002244; /* Azul más oscuro para contraste */
+  padding: 10px 20px;
+  text-align: center;
+}
+
+.pie-pagina .grupo-2 small {
+  font-size: 14px; /* Ajuste del tamaño de fuente */
+}
+
+/* Responsividad */
+@media screen and (max-width: 800px) {
+  .pie-pagina .grupo-1 {
+    grid-template-columns: 1fr;
+    gap: 20px; /* Ajuste del espacio entre columnas en pantallas pequeñas */
+    padding: 20px; /* Ajuste del padding */
+  }
+}

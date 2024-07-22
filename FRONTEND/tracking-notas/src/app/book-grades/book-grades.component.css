@@ -1,0 +1,156 @@
+table {
+  width: 80%;
+  border-collapse: collapse;
+  margin: 50px;
+}
+.header{    
+  background-color: rgb(10, 102, 168);   
+  color: #fffbfb;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+th, td {
+  border: 2px solid #000;
+  text-align: center;
+  padding: 8px;
+}
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.ini {
+  font-family: sans-serif;
+  background: #738fd8;
+}
+
+.contenido {
+  min-height: 80px;
+  background: linear-gradient(100deg,  rgb(36, 52, 177)10%, rgb(42, 99, 197)70%);
+}
+
+.menu {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(100deg,  rgb(36, 52, 177)10%, rgb(42, 99, 197)70%);
+  z-index: 1000;
+  padding: 0 20px;
+}
+
+.logo {
+  font-size: 25px;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.menu .navbar {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu .navbar ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.menu .navbar ul li {
+  position: relative;
+}
+.menu .navbar ul li a {
+  font-size: 18px;
+  padding: 20px;
+  color: #dedede;
+  display: block;
+  font-weight: bold;
+}
+.menu .navbar ul li a :hover {
+  color: #ffffff;
+}
+
+#menu {
+  display: none;
+}
+
+.menu-icono {
+  width: 25px;
+}
+
+.menu label {
+  cursor: pointer;
+  display: none;
+}
+
+@media(max-width:750px) {
+  .contenido {
+      min-height: 70px;
+  }
+  .menu {
+      padding: 20px;
+  }
+
+  .menu label {
+      display: initial;
+  }
+
+  .menu .navbar {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: auto;
+      background: linear-gradient(100deg,  rgb(36, 52, 177)10%, rgb(42, 99, 197)70%);
+      display: none;
+      flex-direction: column;
+      width: auto;
+  }
+
+  .menu .navbar ul{
+      flex-direction: column;
+      width: auto;
+  }
+
+  .menu .navbar ul li {
+      width: auto;
+  }
+
+  #menu:checked~.navbar {
+      display: flex;
+  }
+}
+
+#inicio {
+  text-align: justify;
+  font-size: 30px;
+  margin: 50px;
+}
+
+/* Estilo del botón */
+.calculate-button {
+  display: block;
+  width: 50%;
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #003366; /* Azul oscuro */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.calculate-button:hover {
+  background-color: #002
+}

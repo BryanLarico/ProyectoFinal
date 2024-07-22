@@ -1,0 +1,26 @@
+<div class="table-container">
+  <table>
+    <thead>
+      <tr class="header">
+        <th>CURSO</th>
+        <th>CÓDIGO</th>
+        <th>CRÉDITOS</th>
+        <th>NOTA</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let course of courses">
+        <td>{{ course.nameCourse }}</td>
+        <td>{{ course.idCourse }}</td>
+        <td>{{ course.credit }}</td>
+        <td>
+          <input class="small-input" type="number" [(ngModel)]="course.grade">
+        </td>
+      </tr>
+    </tbody>
+    <button class="calculate-button" (click)="calculateOverallAverage()">Calcular</button><br>
+    <label>Promedio General: {{ overallAverage }}</label><br>
+    <a href="../semester-grades" class="">Promedio de Semestre</a>
+  </table>
+  
+</div>

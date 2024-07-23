@@ -26,7 +26,7 @@ class BaseAdmin(admin.ModelAdmin):
    
 class UserAdmin(admin.ModelAdmin):
     list_display = ('username', 'email', 'user_type', 'semester', 'name', 'dni', 'registration_date', 'usuario_activo', 'usuario_teacher')
-    search_fields = ('username', 'email', 'semester', 'name', 'dni')
+    search_fields = ('username', 'email', 'semeste', 'name', 'dni')
     list_filter = ('user_type', 'usuario_activo', 'usuario_teacher')
    
 class UserManagerAdmin(BaseAdmin):
@@ -60,7 +60,7 @@ class CareerAdmin(BaseAdmin):
     list_display = ['idCareer', 'nameCareer', 'created', 'modified']
 
 class UnitReportAdmin(BaseAdmin):
-    list_display = ['idUnitReport', 'idCourse', 'idStudent', 'eval_cont1', 'parcial1', 'eval_cont2', 'parcial2', 'eval_cont3', 'parcial3']
+    list_display = ['idUnitReport', 'idCourse', 'username', 'eval_cont1', 'parcial1', 'eval_cont2', 'parcial2', 'eval_cont3', 'parcial3']
 
 admin.site.register(Course, CourseAdmin)
 admin.site.register(Event, EventAdmin)

@@ -3,12 +3,12 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from .Course import Course
 from .Event import Event
-from .Student import Student
+from .UserManager import User, UserManager
 
 class UnitReport(models.Model):
     idUnitReport = models.AutoField(primary_key=True)
     idCourse = models.ForeignKey(Course, on_delete=models.CASCADE, null=True)
-    idStudent = models.ForeignKey(Student, on_delete=models.CASCADE, null=True)
+    username = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     eval_cont1 = models.FloatField(null=True, blank=True, validators=[
         MinValueValidator(0),
         MaxValueValidator(20)
@@ -35,4 +35,4 @@ class UnitReport(models.Model):
     ])
 
     def __str__(self):
-        return f"Unit Report for Course: {self.idCourse.nameCourse} and Student: {self.idStudent.name}"
+        return f"Unit Report for Course: {self.idCourse.nameCourse} and User: {self.username.username}"

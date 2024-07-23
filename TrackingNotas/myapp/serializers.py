@@ -113,7 +113,7 @@ class StudentSerializer(serializers.ModelSerializer):
 class UnitReportSerializer(serializers.ModelSerializer):
     class Meta:
         model = UnitReport
-        fields = ['idUnitReport', 'idCourse', 'idStudent', 'eval_cont1', 'parcial1', 'eval_cont2', 
+        fields = ['idUnitReport', 'idCourse', 'username', 'eval_cont1', 'parcial1', 'eval_cont2', 
             'parcial2', 'eval_cont3', 'parcial3']
 
 class TeacherSerializer(serializers.ModelSerializer):

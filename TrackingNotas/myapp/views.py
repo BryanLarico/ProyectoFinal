@@ -32,14 +32,16 @@ from .serializers import (
 
 class UserRegister(APIView):
     permission_classes = [AllowAny]
-
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            user = serializer.save()
+            semester = request.data.get('semester')
+            courses = Course.objects.filter(semester=semester)
+            for course in courses:
+                UnitReport.objects.create(username=user, idCourse=course)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
     def get(self, request):
         return Response({'error': 'GET method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
         
@@ -180,16 +182,23 @@ class UnitReportListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = UnitReportSerializer
 
 class UnitReportDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [AllowAny]
     queryset = UnitReport.objects.all()
     serializer_class = UnitReportSerializer
     
 class UnitReportByStudentAPIView(APIView):
-    def get(self, request, id_Student):
-        unitReports = UnitReport.objects.filter(idStudent=id_Student)
-        if unitReports.exists():
-            serializer = UnitReportSerializer(unitReports, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
+    permission_classes = [AllowAny]
+
+    def get(self, request, username):
+        try:
+            user = User.objects.get(username=username)
+            unitReports = UnitReport.objects.filter(username=user)
+            if unitReports.exists():
+                serializer = UnitReportSerializer(unitReports, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+        except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
 class TeacherListCreateAPIView(generics.ListCreateAPIView):

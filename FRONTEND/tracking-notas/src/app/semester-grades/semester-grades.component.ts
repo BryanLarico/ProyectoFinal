@@ -19,47 +19,70 @@ export class SemesterGradesComponent implements OnInit {
   courseGrades: { [key: number]: any } = {};
   acumFila: number[] = [];
   acumFilaPunt: number[] = [];
+  semester: number = 1;
+  username: string = '';
 
   constructor(private authService: AuthService, private http: HttpClient, private router: Router){
   }
   ngOnInit(): void {
+    this.semester = parseInt(localStorage.getItem('semester') || '1', 10);
+    this.username = localStorage.getItem('username') || '';
+    console.log('Username from localStorage:', this.username); // Verificar el username
+    if (!this.username) {
+      console.error('Username is not set in localStorage');
+      return;
+    }
     this.loadCourse();
   }
 
   loadCourse(): void {
-    const apiUrl = 'http://127.0.0.1:8000/api/courses/';
-    this.http.get(apiUrl).subscribe((data: any) => {
-      this.courses = data;
+    console.log('Semestre del usuario: ', this.semester);
+    this.authService.getCoursesBySemester(this.semester).subscribe((data: any) => {
+      console.log('Datos de cursos recibidos: ',data);
+      this.courses = data.filter((course: any) => course.semester === this.semester);
       this.loadGrades();
     });
   }
 
-  sendGradesHTML() {
+  sendGradesHTML(): void {
     for (let courseId in this.courseGrades) {
-      const unitReport = this.courseGrades[courseId];
-      if (unitReport.idUnitReport) { // Verifica que `idUnitReport` esté definido
-        this.authService.updateGrades(unitReport.idUnitReport, unitReport).subscribe(
-          response => {
-            console.log('Updated unit report:', response);
-          },
-          error => console.log('Error:', error)
-        );
-      }
-    }
-  }
-  
-  loadGrades(): void {
-    const apiGradesUrl = `http://127.0.0.1:8000/api/unitreports/student/${this.studentId}/`;
-    this.http.get<any []>(apiGradesUrl).subscribe((data) => {
-      data.forEach((unitReport: any) => {
-        if (!this.courseGrades[unitReport.idCourse]) {
-          this.courseGrades[unitReport.idCourse] = unitReport;
+        const unitReport = this.courseGrades[courseId];
+        if (unitReport.idUnitReport) { // Verifica que `idUnitReport` esté definido
+            this.authService.updateGrades(unitReport.idUnitReport, unitReport).subscribe(
+                response => {
+                    console.log('Updated unit report:', response);
+                },
+                error => console.log('Error:', error)
+            );
         }
-      });
-    }, error => {
-      console.log('Error loading grades:', error);
-    });
-  }
+    }
+ }
+  
+ loadGrades(): void {
+  const apiGradesUrl = `http://127.0.0.1:8000/api/unitreports/username/${this.username}/`;
+  this.http.get<any[]>(apiGradesUrl).subscribe(
+      (data) => {
+          console.log('Datos de calificaciones recibidos:', data);
+          data.forEach((unitReport: any) => {
+              if (!this.courseGrades[unitReport.idCourse]) {
+                  this.courseGrades[unitReport.idCourse] = {
+                      eval_cont1: unitReport.eval_cont1 || 0,
+                      parcial1: unitReport.parcial1 || 0,
+                      eval_cont2: unitReport.eval_cont2 || 0,
+                      parcial2: unitReport.parcial2 || 0,
+                      eval_cont3: unitReport.eval_cont3 || 0,
+                      parcial3: unitReport.parcial3 || 0,
+                  };
+              } else {
+                  console.log(`Duplicate course ID: ${unitReport.idCourse}`);
+              }
+          });
+      },
+      (error) => {
+          console.error('Error al cargar las calificaciones:', error);
+      }
+  );
+}
 
 
   averageGrades() {

@@ -35,22 +35,22 @@
     </thead>
     <tbody>
       <tr *ngFor="let course of courses; let i = index">
-          <td>{{ course.nameCourse }}</td>
-          <td class="highlight"><span class="percentage">{{ course.e1 }} %</span></td>
-          <td class="highlight"><input class="small-input" [(ngModel)]="courseGrades[course.idCourse].eval_cont1" type="number"></td>
-          <td class="highlight"><span class="percentage">{{ course.p1 }} %</span></td>
-          <td class="highlight"><input class="small-input" [(ngModel)]="courseGrades[course.idCourse].parcial1" type="number"></td>
-          <td class="highlight"><span class="percentage">{{ course.e2 }} %</span></td>
-          <td class="highlight"><input class="small-input" [(ngModel)]="courseGrades[course.idCourse].eval_cont2" type="number"></td>
-          <td class="highlight"><span class="percentage">{{ course.p2 }} %</span></td>
-          <td class="highlight"><input class="small-input" [(ngModel)]="courseGrades[course.idCourse].parcial2" type="number"></td>
-          <td class="highlight"><span class="percentage">{{ course.e3 }} %</span></td>
-          <td class="highlight"><input class="small-input" [(ngModel)]="courseGrades[course.idCourse].eval_cont3" type="number"></td>
-          <td class="highlight"><span class="percentage">{{ course.p3 }} %</span></td>
-          <td class="highlight"><input class="small-input" [(ngModel)]="courseGrades[course.idCourse].parcial3" type="number"></td>
-          <td>{{ acumFila[i] }} %</td>
-          <td>{{ acumFilaPunt[i] }}</td>
-        </tr>
+        <td>{{ course.nameCourse }}</td>
+        <td class="highlight"><span class="percentage">{{ course.e1 }} %</span></td>
+        <td class="highlight"><input class="small-input" [(ngModel)]="courseGrades[course.idCourse].eval_cont1" type="number" /></td>
+        <td class="highlight"><span class="percentage">{{ course.p1 }} %</span></td>
+        <td class="highlight"><input class="small-input" [(ngModel)]="courseGrades[course.idCourse].parcial1" type="number" /></td>
+        <td class="highlight"><span class="percentage">{{ course.e2 }} %</span></td>
+        <td class="highlight"><input class="small-input" [(ngModel)]="courseGrades[course.idCourse].eval_cont2" type="number" /></td>
+        <td class="highlight"><span class="percentage">{{ course.p2 }} %</span></td>
+        <td class="highlight"><input class="small-input" [(ngModel)]="courseGrades[course.idCourse].parcial2" type="number" /></td>
+        <td class="highlight"><span class="percentage">{{ course.e3 }} %</span></td>
+        <td class="highlight"><input class="small-input" [(ngModel)]="courseGrades[course.idCourse].eval_cont3" type="number" /></td>
+        <td class="highlight"><span class="percentage">{{ course.p3 }} %</span></td>
+        <td class="highlight"><input class="small-input" [(ngModel)]="courseGrades[course.idCourse].parcial3" type="number" /></td>
+        <td>{{ acumFila[i] || 0 }} %</td>
+        <td>{{ acumFilaPunt[i] || 0 }}</td>
+      </tr>
     </tbody>
   </table>
   <div class="button-container">
@@ -58,7 +58,7 @@
     <button class="calculate-button" (click)="sendGradesHTML()">Guardar</button>
     <a href="../book-grades" class="share-link">Promedio General</a>
     <button class="logout" (click)="logout()">Logout</button>
-  </div>
+  </div> 
   <div>
     <!--<strong>Promedio general: </strong> {{overallAverage | number: '1.2-2'}}-->
   </div>

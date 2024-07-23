@@ -72,8 +72,7 @@ urlpatterns = [
     # URLs para UnitReport
     path('unitreports/', UnitReportListCreateAPIView.as_view(), name='unitreport-list-create'),
     path('unitreports/<int:pk>/', UnitReportDetailAPIView.as_view(), name='unitreport-detail'),
-    path('unitreports/student/<int:id_Student>/', UnitReportByStudentAPIView.as_view(), name='unitreport-by-student'),
-    
+    path('unitreports/username/<str:username>/', UnitReportByStudentAPIView.as_view(), name='unitreport-by-username'),    
     # URLs para Student
     path('students/', StudentListCreateAPIView.as_view(), name='student-list-create'),
     path('students/<int:pk>/', StudentDetailAPIView.as_view(), name='student-detail'),

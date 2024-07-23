@@ -18,7 +18,9 @@ export class AuthService {
   login(userData: UserLogin): Observable<any> {
     return this.http.post(this.apiUrlLogin, userData).pipe(
       tap((response: any) => {
+        console.log('Login response:', response); // Depuración
         this.setToken(response.token);
+        console.log('Token set:', this.getToken()); // Depuración
       })
     );
   }
@@ -27,8 +29,15 @@ export class AuthService {
     return this.http.post(this.apiUrlSignUP, userData);
   }
 
+  createUnitReport(unitReport: UnitReport): Observable<any> {
+    const url = `http://127.0.0.1:8000/api/unitreports/`;
+    return this.http.post(url, unitReport);
+  }
+
   getCoursesBySemester(semester: number): Observable<any> {
-    return this.http.get(`${this.apiCourses}?semester=${semester}`);
+    const url = `${this.apiCourses}?semester=${semester}`;
+    console.log('API URL:', url);
+    return this.http.get(url);
   }
 
   sendGrades(grades: Grades): Observable<any> {
@@ -60,6 +69,29 @@ export class AuthService {
   getToken(): string | null {
     return localStorage.getItem('auth_token');
   }
+  getAuthHeaders() {
+    const token = this.getToken();
+    return {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      })
+    };
+  }
+}
+
+interface Course {
+  idCourse: number;
+  nameCourse: string;
+  credit?: number;
+  prerequisite?: number;
+  semester?: number;
+  p1?: number;
+  p2?: number;
+  p3?: number;
+  e1?: number;
+  e2?: number;
+  e3?: number;
+  status?: boolean;
 }
 
 interface UserData {
@@ -95,10 +127,21 @@ interface courseGrades {
   percentage_acum: number;
   socre_acum: number;
 }
+interface UnitReport {
+  idUnitReport: number;
+  idCourse: number;
+  username: string;
+  eval_cont1: number | null;
+  parcial1: number | null;
+  eval_cont2: number | null;
+  parcial2: number | null;
+  eval_cont3: number | null;
+  parcial3: number | null;
+}
 interface Grades {
   idUnitReport: number;
-  idCourse: number; // FP1
-  idStudent: number; // Bryan
+  idCourse: number;
+  username: string;
   eval_cont1: number;
   parcial1: number;
   eval_cont2: number;

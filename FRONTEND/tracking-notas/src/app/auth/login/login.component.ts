@@ -25,15 +25,15 @@ export class LoginComponent implements OnInit{
 
   ngOnInit(): void {
   }
-  loginUser(){
+  loginUser() {
     this.authService.login(this.input).subscribe(
       response => {
-        console.log(response) //Borrar despues
-        //alert('User ' + this.input.username + ' logged.');
+        console.log(response); 
+        localStorage.setItem('username', this.input.username);
         this.router.navigate(['../../semester-grades']);
       },
       error => console.log('Error: ', error)
-    )
+    );
     console.log(this.input);
   }
 }

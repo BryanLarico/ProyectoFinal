@@ -13,14 +13,14 @@ import { HttpClient } from '@angular/common/http';
   providers: [AuthService],
 })
 
-export class SignupComponent implements OnInit{
+export default class SignupComponent implements OnInit{
   courses: Course[] = [];
   register = {
     username: '',
     email: '',
-    semester: 1,
+    semester: 1, 
     password: '',
-    name: '',
+    name: '', 
     dni: '',
     usuario_activo: true,
     usuario_teacher: false,

@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit{
     username: '',
     password: '',
   }  
-
+  isAdmin = false;
   constructor(private authService: AuthService, private router: Router){
 
   }
@@ -30,7 +30,11 @@ export class LoginComponent implements OnInit{
       response => {
         console.log(response); 
         localStorage.setItem('username', this.input.username);
-        this.router.navigate(['../../semester-grades']);
+        if (response.usuario_teacher) {
+          this.router.navigate(['../../prueba']);
+        } else {
+          this.router.navigate(['../../semester-grades']);
+        }
       },
       error => console.log('Error: ', error)
     );

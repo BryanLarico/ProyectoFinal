@@ -45,18 +45,21 @@ export class SemesterGradesComponent implements OnInit {
   }
 
   sendGradesHTML(): void {
-    for (let courseId in this.courseGrades) {
-        const unitReport = this.courseGrades[courseId];
-        if (unitReport.idUnitReport) { // Verifica que `idUnitReport` esté definido
-            this.authService.updateGrades(unitReport.idUnitReport, unitReport).subscribe(
-                response => {
-                    console.log('Updated unit report:', response);
-                },
-                error => console.log('Error:', error)
-            );
-        }
+    console.log('Datos de courseGrades antes de guardar:', this.courseGrades);
+    for (let unitReportId in this.courseGrades) {
+      const unitReport = this.courseGrades[unitReportId];
+      if (unitReport.idUnitReport) { // Verifica que `idUnitReport` esté definido
+        this.authService.updateGrades(unitReport.idUnitReport, unitReport).subscribe(
+          response => {
+            console.log('Updated unit report:', response);
+          },
+          error => {
+            console.log('Error:', error);
+          }
+        );
+      }
     }
- }
+  }
   
  loadGrades(): void {
   const apiGradesUrl = `http://127.0.0.1:8000/api/unitreports/username/${this.username}/`;
@@ -85,26 +88,26 @@ export class SemesterGradesComponent implements OnInit {
 }
 
 
-  averageGrades() {
-    this.acumFila = []; 
-    for (let course of this.courses) {
-      const courseGrades = this.courseGrades[course.idCourse] || {
-        eval_cont1: 0, parcial1: 0,
-        eval_cont2: 0, parcial2: 0,
-        eval_cont3: 0, parcial3: 0
-      };
-      let acumPercentage = 0;
-      acumPercentage += this.prom(courseGrades.eval_cont1, course.e1);
-      console.log(acumPercentage);
-      acumPercentage += this.prom(courseGrades.parcial1, course.p1);
-      acumPercentage += this.prom(courseGrades.eval_cont2, course.e2);
-      acumPercentage += this.prom(courseGrades.parcial2, course.p2);
-      acumPercentage += this.prom(courseGrades.eval_cont3, course.e3);
-      acumPercentage += this.prom(courseGrades.parcial3, course.p3);
-      this.acumFila.push(acumPercentage);
-    }
-    this.averageGradesPunt();
+averageGrades() {
+  this.acumFila = []; 
+  for (let course of this.courses) {
+    const courseGrades = this.courseGrades[course.idCourse] || {
+      eval_cont1: 0, parcial1: 0,
+      eval_cont2: 0, parcial2: 0,
+      eval_cont3: 0, parcial3: 0
+    };
+    let acumPercentage = 0;
+    acumPercentage += this.prom(courseGrades.eval_cont1, course.e1);
+    console.log(acumPercentage);
+    acumPercentage += this.prom(courseGrades.parcial1, course.p1);
+    acumPercentage += this.prom(courseGrades.eval_cont2, course.e2);
+    acumPercentage += this.prom(courseGrades.parcial2, course.p2);
+    acumPercentage += this.prom(courseGrades.eval_cont3, course.e3);
+    acumPercentage += this.prom(courseGrades.parcial3, course.p3);
+    this.acumFila.push(acumPercentage);
   }
+  this.averageGradesPunt();
+}
 
   prom(percentage: number, grades: number){
     return percentage * grades / 20;
@@ -119,20 +122,26 @@ export class SemesterGradesComponent implements OnInit {
 
     }
   }
-  logout(){
-    const refreshToken = localStorage.getItem('refreshToken');
-    if (refreshToken){
-      this.authService.logout(refreshToken).subscribe(
-        response => {
-          localStorage.removeItem('authToken');
-          localStorage.removeItem('refreshToken');
-          this.router.navigate(['login']);
-        },
-
-        error => {
-          console.error('Error during logout', error);
-        }
-      )
+  isLocalStorageAvailable(): boolean {
+    try {
+      const test = '__test__';
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
+      return true;
+    } catch (e) {
+      return false;
     }
+  }
+  logout() {
+    this.authService.logout().subscribe(
+      response => {
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('access_token');
+        this.router.navigate(['/login']);
+      },
+      error => {
+        console.error('Error during logout', error);
+      }
+    );
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +16,48 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(userData: UserLogin): Observable<any> {
-    return this.http.post(this.apiUrlLogin, userData).pipe(
-      tap((response: any) => {
+    return this.http.post<{ refresh: string, access: string, user_type: string }>(this.apiUrlLogin, userData).pipe(
+      tap(response => {
         console.log('Login response:', response); // Depuración
-        this.setToken(response.token);
-        console.log('Token set:', this.getToken()); // Depuración
-      })
+
+        if (response && response.access && response.refresh) {
+          this.setTokens(response.access, response.refresh);
+          console.log('Access token set:', this.getAccessToken()); // Depuración
+          console.log('Refresh token set:', this.getRefreshToken()); // Depuración
+        } else {
+          console.error('Tokens are undefined or response does not contain tokens');
+        }
+
+        // Puedes usar el user_type para otras lógicas en tu aplicación
+        console.log('User type:', response.user_type); // Depuración
+      }),
+      catchError(this.handleError('login', [])) // Manejo de errores
     );
   }
+   // Método para almacenar los tokens en localStorage
+  private setTokens(accessToken: string, refreshToken: string): void {
+    localStorage.setItem('access_token', accessToken);
+    localStorage.setItem('refresh_token', refreshToken);
+  }
+
+  // Métodos para obtener los tokens desde localStorage
+  private getAccessToken(): string | null {
+    return localStorage.getItem('access_token');
+  }
+
+  private getRefreshToken(): string | null {
+    return localStorage.getItem('refresh_token');
+  }
+
+  // Ejemplo de un método de manejo de errores
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(`${operation} failed: ${error.message}`); // Log a to console for now
+      return of(result as T);
+    };
+  }
+
+
 
   signup(userData: UserData): Observable<any> {
     return this.http.post(this.apiUrlSignUP, userData);
@@ -49,25 +83,40 @@ export class AuthService {
     return this.http.put(url, data);
   }
 
-  logout(refreshToken: string): Observable<any> {
-    const body = { refresh_token: refreshToken };
-    return this.http.post(this.apiLogout, body).pipe(
+  logout(): Observable<any> {
+    const token = this.getAccessToken();
+    if (!token) {
+      console.error('No access token found');
+      return of(null);
+    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post(this.apiLogout, {}, { headers }).pipe(
       tap(() => {
-        this.removeToken();
-      })
+        console.log('Logout successful'); // Depuración
+        this.clearTokens();
+      }),
+      catchError(this.handleError('logout', [])) // Manejo de errores
     );
   }
 
+  private clearTokens(): void {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
+  }
+
   private setToken(token: string): void {
-    localStorage.setItem('auth_token', token);
+    localStorage.setItem('token', token);
   }
 
   private removeToken(): void {
     localStorage.removeItem('auth_token');
   }
 
-  getToken(): string | null {
-    return localStorage.getItem('auth_token');
+    // Ejemplo del método `getToken`
+  private getToken(): string | null {
+    return localStorage.getItem('token');    
+  
   }
   getAuthHeaders() {
     const token = this.getToken();
@@ -148,4 +197,8 @@ interface Grades {
   parcial2: number;
   eval_cont3: number;
   parcial3: number;
+}
+interface UserLogin {
+  username: string;
+  password: string;
 }

@@ -2,10 +2,11 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter, RouterOutlet } from '@angular/router';
 import { AppComponent } from './app/app.component';
 import { LoginComponent } from './app/auth/login/login.component';
-import { SignupComponent } from './app/auth/signup/signup.component';
+import SignupComponent from './app/auth/signup/signup.component';
 import { SemesterGradesComponent } from './app/semester-grades/semester-grades.component';
 import { BookGradesComponent } from './app/book-grades/book-grades.component';
 import { provideHttpClient } from '@angular/common/http';
+import { PruebaComponent } from './app/prueba/prueba.component';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -15,6 +16,7 @@ bootstrapApplication(AppComponent, {
       { path: 'signup', component: SignupComponent},
       { path: 'book-grades', component: BookGradesComponent },
       { path: 'semester-grades', component:  SemesterGradesComponent },
+      { path: 'prueba', component: PruebaComponent },
       { path: '', redirectTo: '/login', pathMatch: 'full' },
       { path: '**', redirectTo: '' }
     ])

@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../auth.service';
 import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-signup',
@@ -15,6 +16,7 @@ import { HttpClient } from '@angular/common/http';
 
 export default class SignupComponent implements OnInit{
   courses: Course[] = [];
+  coursesViewed: Course[] = [];
   register = {
     username: '',
     email: '',
@@ -39,13 +41,45 @@ export default class SignupComponent implements OnInit{
       response => {
         alert('User ' + this.register.username + ' created')
         localStorage.setItem('semester', this.register.semester.toString());
-        console.log(this.register.semester)
+        console.log(this.register.semester);
         this.getCourses();
         this.createUnitReportsForSemester();
+        console.log(this.register.username);
+        this.createCourseGradesStudents();
       },
       error => console.log('Error:', error)
     )
-    console.log(this.register);
+    
+  }
+  
+  async createCourseGradesStudents() {
+    const currentSemester = this.register.semester;
+    try {
+      for (let semester: number = 1; semester <= currentSemester; semester++) {
+        const courses: Course[] = await firstValueFrom(this.authService.getCoursesBySemester(semester));
+        this.coursesViewed = courses;
+        
+        for (const course of this.coursesViewed) {
+          console.log(this.coursesViewed);
+          const courseGradesStudent: CourseGradesStudent = {
+            idCourseGradesStudent: 0, 
+            idCourse: course.idCourse,
+            username: this.register.username,
+            finalGrade: null, 
+          };
+          console.log('Prueba de courseGradesStudent: ',courseGradesStudent);
+          this.authService.createCourseGradesStudent(courseGradesStudent).subscribe(
+          (response) => console.log('CourseGrades created:', response),
+          (error) => {
+            console.log('Error creating CourseGrades:', error);
+            console.log(courseGradesStudent); 
+          }
+          );
+        }
+      }
+    } catch (error) {
+      console.log('Error getting courses:', error);
+    }
   }
   getCourses() {
     this.authService.getCoursesBySemester(this.register.semester).subscribe(
@@ -108,4 +142,11 @@ interface UnitReport {
   parcial2: number | null;
   eval_cont3: number | null;
   parcial3: number | null;
+}
+
+interface CourseGradesStudent {
+  idCourseGradesStudent: number;
+  idCourse: number;
+  username: string;
+  finalGrade: number | null;
 }

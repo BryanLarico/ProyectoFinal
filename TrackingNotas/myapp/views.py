@@ -112,6 +112,7 @@ class UserCreateApiView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserListApiView(generics.ListAPIView):
+    permission_classes = [AllowAny]
     queryset = User.objects.all()
     serializer_class = UserManageSerializer
 
@@ -139,6 +140,7 @@ class UserViewSet(viewsets.ModelViewSet):
     #permission_classes = (IsAuthenticated,)
 """
 class CourseListCreateAPIView(generics.ListCreateAPIView):
+    #Por ahora
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     permission_classes = [AllowAny]
@@ -151,19 +153,21 @@ class CourseDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     #permission_classes = [IsAuthenticated]
 
 class CourseBySemesterAPIView(generics.ListAPIView):
-    serializer_class = CourseSerializer
     permission_classes = [AllowAny]
+    serializer_class = CourseSerializer
     def get_queryset(self):
         semester = self.kwargs['semester']
         return Course.objects.filter(semester=semester)
     
 class CourseGradesStudentListCreateAPIView(generics.ListCreateAPIView):
-    queryset = Course.objects.all()
+    permission_classes = [AllowAny]
+    queryset = CourseGradesStudent.objects.all()
     serializer_class = CourseGradesStudentSerializer
     #permission_classes = [IsAuthenticated]
 
 class CourseGradesStudentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Course.objects.all()
+    permission_classes = [AllowAny]
+    queryset = CourseGradesStudent.objects.all()
     serializer_class = CourseGradesStudentSerializer
     #permission_classes = [IsAuthenticated]
     
@@ -178,6 +182,7 @@ class StudentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     #permission_classes = [IsAuthenticated]
 
 class UnitReportListCreateAPIView(generics.ListCreateAPIView):
+    permission_classes = [AllowAny]
     queryset = UnitReport.objects.all()
     serializer_class = UnitReportSerializer
 

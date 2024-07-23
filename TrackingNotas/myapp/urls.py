@@ -62,7 +62,8 @@ urlpatterns = [
     path('careers/<int:pk>/', CareerDetailAPIView.as_view(), name='career-detail'),
 
     # URLs para Course
-    path('courses/', CourseListCreateAPIView.as_view(), name='course-list-create'),
+    path('course/', CourseListCreateAPIView.as_view(), name='course-list-create'),
+    path('course/<int:pk>/', CourseDetailAPIView.as_view(), name='course-delete-update'),
     path('courses/<int:pk>/', CourseDetailAPIView.as_view(), name='course-detail'),
     path('courses/semester/<int:semester>/', CourseBySemesterAPIView.as_view(), name='course-by-semester'),
 

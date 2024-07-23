@@ -1,1 +1,166 @@
-<p>create-course works!</p>
+<div class="container mt-5">
+    <h2 class="text-center custom-text-color mt-5">{{ isEditing ? 'Actualizar' : 'Agregar' }} Curso</h2>
+    <form (ngSubmit)="onSubmit()" class="course-form">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>ID Course</label>
+                    <input type="number" [(ngModel)]="currentCourse.idCourse" name="IDCourse" class="form-control" autocomplete="off" required/>
+                </div>
+                <div class="form-group">
+                    <label>Name Course</label>
+                    <input type="text" [(ngModel)]="currentCourse.nameCourse" name="nameCourse" class="form-control" autocomplete="off" required/>
+                </div>
+                <div class="form-group">
+                    <label>Credit</label>
+                    <input type="number" [(ngModel)]="currentCourse.credit" name="credit" class="form-control" autocomplete="off" required/>
+                </div>
+                <div class="form-group">
+                    <label>Prerequisite</label>
+                    <input type="number" [(ngModel)]="currentCourse.prerequisite" name="prerequisite" class="form-control" autocomplete="off" required/>
+                </div>
+                <div class="form-group">
+                    <label>Semester</label>
+                    <input type="number" [(ngModel)]="currentCourse.semester" name="semester" class="form-control" autocomplete="off" required/>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Evaluación Continua 1</label>
+                    <div class="input-group">
+                        <input type="number" [(ngModel)]="currentCourse.p1" name="p1" class="form-control small-input" autocomplete="off" required/>
+                        <div class="input-group-append">
+                            <span class="input-group-text percentage-text">%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Evaluación Continua 2</label>
+                    <div class="input-group">
+                        <input type="number" [(ngModel)]="currentCourse.p2" name="p2" class="form-control small-input" autocomplete="off" required/>
+                        <div class="input-group-append">
+                            <span class="input-group-text percentage-text">%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Evaluación Continua 3</label>
+                    <div class="input-group">
+                        <input type="number" [(ngModel)]="currentCourse.p3" name="p3" class="form-control small-input" autocomplete="off" required/>
+                        <div class="input-group-append">
+                            <span class="input-group-text percentage-text">%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Parcial 1</label>
+                    <div class="input-group">
+                        <input type="number" [(ngModel)]="currentCourse.e1" name="e1" class="form-control" autocomplete="off" required/>
+                        <div class="input-group-append">
+                            <span class="input-group-text percentage-text">%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Parcial 2</label>
+                    <div class="input-group">
+                        <input type="number" [(ngModel)]="currentCourse.e2" name="e2" class="form-control" autocomplete="off" required/>
+                        <div class="input-group-append">
+                            <span class="input-group-text percentage-text">%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Parcial 3</label>
+                    <div class="input-group">
+                        <input type="number" [(ngModel)]="currentCourse.e3" name="e3" class="form-control" autocomplete="off" required/>
+                        <div class="input-group-append">
+                            <span class="input-group-text percentage-text">%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-buttons text-center">
+            <button type="button" class="btn btn-secondary" (click)="resetForm()">Cancelar</button>
+            <button type="submit" class="btn btn-primary">{{ isEditing ? 'Actualizar' : 'Agregar' }} Course</button>
+        </div>
+    </form>
+
+    <h2 class="text-center custom-text-color mt-5">Lista de Cursos</h2>
+    <table class="table table-striped table-hover event-table">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Name Course</th>
+                <th>Prerequisite</th>
+                <th>Semester</th>
+                <th>EC 1</th>
+                <th>EC 2</th>
+                <th>EC 3</th>
+                <th>P 1</th>
+                <th>P 2</th>
+                <th>P 3</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let course of courses">
+                <td>{{ course.idCourse }}</td>
+                <td>{{ course.nameCourse }}</td>
+                <td>{{ course.prerequisite }}</td>
+                <td>{{ course.semester }}</td>
+                <td>{{ course.p1 }}</td>
+                <td>{{ course.p2 }}</td>
+                <td>{{ course.p3 }}</td>
+                <td>{{ course.e1 }}</td>
+                <td>{{ course.e2 }}</td>
+                <td>{{ course.e3 }}</td>
+                <td>{{ course.status }}</td>  
+                <td>
+                    <button (click)="editCourse(course)" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i></button>
+                    <button (click)="deleteCourse(course.idCourse)" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>                  
+                </td>          
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const rows = document.querySelectorAll('.event-table tbody tr');
+        rows.forEach(row => {
+            row.addEventListener('mouseover', () => {
+                row.style.backgroundColor = '#f39c12';
+                row.style.color = 'white';
+            });
+            row.addEventListener('mouseout', () => {
+                row.style.backgroundColor = '';
+                row.style.color = '';
+            });
+        });
+    });
+</script>
+<!--  
+export interface Course {
+    idCourse: number;
+    nameCourse: string;
+    credit: number;
+    prerequisite: number;
+    semester: number;
+    laboratory: string | null;
+    hoursTeory: number | null;
+    hoursPractice: number | null;
+    p1: number;
+    p2: number;
+    p3: number;
+    e1: number;
+    e2: number;
+    e3: number;
+    status: boolean;
+}
+-->

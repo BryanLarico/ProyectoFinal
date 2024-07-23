@@ -36,7 +36,7 @@ class CourseAdmin(BaseAdmin):
     list_display = ['idCourse', 'nameCourse', 'credit', 'prerequisite', 'semester', 'laboratory', 'hoursTeory', 'hoursPractice', 'p1', 'p2', 'p3', 'e1', 'e2', 'e3', 'status', 'created', 'modified']
 
 class CourseGradesStudentAdmin(BaseAdmin):
-    list_display = ['idCourseGradesStudent', 'idCourse', 'idStudent', 'finalGrade', 'created', 'modified']
+    list_display = ['idCourseGradesStudent', 'idCourse', 'username', 'finalGrade', 'created', 'modified']
     
 class EventAdmin(BaseAdmin):
     list_display = ['idEvent', 'idCourse', 'amountEvent', 'percentageProgress', 'percentageExam', 'created', 'modified']

@@ -14,7 +14,6 @@ import { Router } from '@angular/router';
   providers: [AuthService],
 })
 export class SemesterGradesComponent implements OnInit {
-  studentId: number = 1 // Cambiar esto por el ID del estudiante
   courses: any[] = [];
   courseGrades: { [key: number]: any } = {};
   acumFila: number[] = [];
@@ -46,12 +45,14 @@ export class SemesterGradesComponent implements OnInit {
 
   sendGradesHTML(): void {
     console.log('Datos de courseGrades antes de guardar:', this.courseGrades);
-    for (let unitReportId in this.courseGrades) {
-      const unitReport = this.courseGrades[unitReportId];
+    for (let i in this.courseGrades) {
+      console.log('Indice: ', i)
+      //const unitReport = this.courseGrades[grade];
+      const unitReport = this.courseGrades[i];
       if (unitReport.idUnitReport) { // Verifica que `idUnitReport` esté definido
         this.authService.updateGrades(unitReport.idUnitReport, unitReport).subscribe(
           response => {
-            console.log('Updated unit report:', response);
+            console.log('Datos despues de cargar:', response);
           },
           error => {
             console.log('Error:', error);
@@ -60,6 +61,7 @@ export class SemesterGradesComponent implements OnInit {
       }
     }
   }
+
   
  loadGrades(): void {
   const apiGradesUrl = `http://127.0.0.1:8000/api/unitreports/username/${this.username}/`;
@@ -69,6 +71,7 @@ export class SemesterGradesComponent implements OnInit {
           data.forEach((unitReport: any) => {
               if (!this.courseGrades[unitReport.idCourse]) {
                   this.courseGrades[unitReport.idCourse] = {
+                      idUnitReport: unitReport.idUnitReport,
                       eval_cont1: unitReport.eval_cont1 || 0,
                       parcial1: unitReport.parcial1 || 0,
                       eval_cont2: unitReport.eval_cont2 || 0,
@@ -76,6 +79,7 @@ export class SemesterGradesComponent implements OnInit {
                       eval_cont3: unitReport.eval_cont3 || 0,
                       parcial3: unitReport.parcial3 || 0,
                   };
+                console.log('Datos enviados: ', this.courseGrades);
               } else {
                   console.log(`Duplicate course ID: ${unitReport.idCourse}`);
               }

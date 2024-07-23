@@ -7,6 +7,7 @@ import { tap, catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService {
+  private apiUrl = 'http://127.0.0.1:8000/api/';
   private apiUrlSignUP = 'http://127.0.0.1:8000/api/register/';
   private apiUrlLogin = 'http://127.0.0.1:8000/api/login/';
   private apiGrades = 'http://127.0.0.1:8000/api/unitreports/';
@@ -16,7 +17,7 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(userData: UserLogin): Observable<any> {
-    return this.http.post<{ refresh: string, access: string, user_type: string }>(this.apiUrlLogin, userData).pipe(
+    return this.http.post<{ refresh: string, access: string, user_type: string, usuario_teacher: boolean }>(this.apiUrlLogin, userData).pipe(
       tap(response => {
         console.log('Login response:', response); // Depuración
 
@@ -30,6 +31,7 @@ export class AuthService {
 
         // Puedes usar el user_type para otras lógicas en tu aplicación
         console.log('User type:', response.user_type); // Depuración
+        console.log('Usuario, teacher:', response.usuario_teacher);
       }),
       catchError(this.handleError('login', [])) // Manejo de errores
     );
@@ -38,6 +40,10 @@ export class AuthService {
   private setTokens(accessToken: string, refreshToken: string): void {
     localStorage.setItem('access_token', accessToken);
     localStorage.setItem('refresh_token', refreshToken);
+  }
+
+  createCourseGradesStudent(courseGradesStudent: CourseGradesStudent): Observable<any> {
+    return this.http.post(`${this.apiUrl}coursesGradesStudent/`, courseGradesStudent);
   }
 
   // Métodos para obtener los tokens desde localStorage
@@ -57,8 +63,6 @@ export class AuthService {
     };
   }
 
-
-
   signup(userData: UserData): Observable<any> {
     return this.http.post(this.apiUrlSignUP, userData);
   }
@@ -69,7 +73,7 @@ export class AuthService {
   }
 
   getCoursesBySemester(semester: number): Observable<any> {
-    const url = `${this.apiCourses}?semester=${semester}`;
+    const url = `${this.apiCourses}semester/${semester}`;
     console.log('API URL:', url);
     return this.http.get(url);
   }
@@ -201,4 +205,11 @@ interface Grades {
 interface UserLogin {
   username: string;
   password: string;
+}
+
+interface CourseGradesStudent {
+  idCourseGradesStudent: number;
+  idCourse: number;
+  username: string;
+  finalGrade: number | null;
 }

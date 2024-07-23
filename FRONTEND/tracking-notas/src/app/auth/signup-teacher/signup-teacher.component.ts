@@ -7,11 +7,11 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-signup-teacher',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './signup-teacher.component.html',
   styleUrl: './signup-teacher.component.css'
 })
-export class SignupTeacherComponent {
+export class SignupTeacherComponent implements OnInit{
   courses: Course[] = [];
   register = {
     username: '',
@@ -21,7 +21,7 @@ export class SignupTeacherComponent {
     name: '', 
     dni: '',
     usuario_activo: true,
-    usuario_teacher: false,
+    usuario_teacher: true,
     
     //is_staff: true,
     //is_superuser: true,
@@ -33,10 +33,12 @@ export class SignupTeacherComponent {
   ngOnInit(): void {} 
 
   registerUser(){
+    console.log(this.register.usuario_teacher);
     this.authService.signup(this.register).subscribe(
       response => {
         alert('User ' + this.register.username + ' created')
         localStorage.setItem('semester', this.register.semester.toString());
+        localStorage.setItem('isTeacher', this.register.usuario_teacher.toString())
         console.log(this.register.semester)
         this.getCourses();
         this.createUnitReportsForSemester();

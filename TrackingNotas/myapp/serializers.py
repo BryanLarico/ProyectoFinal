@@ -25,7 +25,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'email', 'semester', 'password', 'name', 'dni']
+        fields = ['username', 'email', 'semester', 'password', 'usuario_teacher','name', 'dni']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -52,7 +52,7 @@ class UserManageSerializer(serializers.ModelSerializer):
 class UserManageCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email', 'username', 'password', 'semester', 'user_type', 'name',  'dni']
+        fields = ['email', 'username', 'password', 'semester', 'user_type', 'usuario_teacher', 'name',  'dni']
         extra_kwargs = {'password': {'write_only': True}}
     
     def create(self, validated_data):
@@ -84,7 +84,8 @@ class CustomTokenObtainPairSerializer(serializers.Serializer):
             payload = {
                 'refresh': str(refresh),
                 'access': access_token,
-                'user_type': getattr(user, 'user_type', 'N/A')  # Usa getattr para evitar errores si el atributo no existe
+                'user_type': getattr(user, 'user_type', 'N/A'),  # Usa getattr para evitar errores si el atributo no existe
+                'usuario_teacher': getattr(user, 'usuario_teacher')
             }
             return payload
         else:
@@ -103,7 +104,7 @@ class CourseSerializer(serializers.ModelSerializer):
 class CourseGradesStudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = CourseGradesStudent
-        fields = ['idCourseGradesStudent', 'idCourse', 'idStudent', 'finalGrade', 'created', 'modified']
+        fields = ['idCourseGradesStudent', 'idCourse', 'username', 'finalGrade', 'created', 'modified']
 
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:

@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit{
       response => {
         console.log(response); 
         localStorage.setItem('username', this.input.username);
+        localStorage.setItem('isTeacher', response.usuario_teacher);
         if (response.usuario_teacher) {
           this.router.navigate(['../../prueba']);
         } else {

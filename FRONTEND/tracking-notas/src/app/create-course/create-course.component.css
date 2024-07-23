@@ -1,0 +1,160 @@
+body {
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+    color: #003366;
+}
+
+.custom-text-color {
+    color: #003366; 
+}
+
+.course-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+}
+
+.course-form .form-group label {
+    font-weight: bold;
+    color: #003366;
+}
+
+.course-form .form-group input {
+    border: 1px solid #003366;
+    border-radius: 4px;
+}
+
+.course-form .form-group.input-group {
+    display: flex;
+    align-items: center;
+}
+
+.course-form .form-group.input-group {
+    width: 70%;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #003366; /* Color azul oscuro para las etiquetas */
+}
+
+/* Estilo para el input con porcentaje */
+.input-group {
+    display: flex;
+    align-items: center;
+}
+
+.input-group .form-control.small-input {
+    width: 80px; /* Ancho pequeño para los campos de evaluación continua */
+}
+
+.input-group .form-control {
+    border-radius: 4px;
+    border: 1px solid #003366;
+}
+
+.input-group .input-group-append {
+    margin-left: -1px; /* Ajusta el espacio entre el campo y el símbolo */
+}
+
+.input-group .percentage-text {
+    background-color: transparent; /* Fondo transparente */
+    color: #003366; /* Texto azul oscuro */
+    border: none; /* Sin borde */
+    padding: 0 10px; /* Espaciado a los lados */
+    font-size: 1rem; /* Tamaño de fuente igual al del campo de entrada */
+}
+
+/* Opcional: Añade estilo para el resto de campos que no tienen el tamaño pequeño */
+.form-group input {
+    border-radius: 4px;
+    border: 1px solid #003366;
+}
+
+.small-input {
+    width: 40px;
+}
+
+.course-form .input-group-append {
+    margin-left: 5px;
+}
+
+.course-form .form-check-label {
+    color: #003366;
+}
+
+.form-buttons {
+    margin-top: 20px;
+}
+
+.form-buttons .btn-secondary {
+    background-color: #f39c12;
+    border: none;
+    color: white;
+    margin-right: 10px;
+}
+
+.form-buttons .btn-primary {
+    background-color: #003366;
+    border: none;
+}
+
+.form-buttons .btn-secondary:hover,
+.form-buttons .btn-primary:hover {
+    opacity: 0.8;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.table thead {
+    background-color: #003366;
+    color: white;
+}
+
+.table tbody tr:hover {
+    background-color: #f39c12;
+    color: white;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    color: #003366;
+}
+
+.btn-icon:hover {
+    color: #f39c12;
+}
+
+.btn-warning {
+    background-color: #f39c12;
+    border: none;
+    color: white;
+}
+
+.btn-warning:hover {
+    background-color: #d6880f;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    border: none;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}

@@ -1,14 +1,13 @@
 from django.db import models
 from django.conf import settings
-from .Teacher import Teacher
 from .Course import Course
-from .Student import Student
 from django.core.validators import MinValueValidator, MaxValueValidator
+from .UserManager import User, UserManager
 
 class CourseGradesStudent(models.Model):
     idCourseGradesStudent = models.AutoField(primary_key=True)
     idCourse = models.ForeignKey(Course, on_delete=models.CASCADE)
-    idStudent = models.ForeignKey(Student, on_delete=models.CASCADE)
+    username = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     finalGrade = models.IntegerField(null=True, blank=True, validators=[
         MinValueValidator(0),
         MaxValueValidator(20)
@@ -23,11 +22,12 @@ class CourseGradesStudent(models.Model):
         settings.AUTH_USER_MODEL, related_name='course_modified_grades_students',
         on_delete=models.SET_NULL, null=True, 
         blank=True)
-
+"""
     def __str__(self):
         finalGrade_display = self.finalGrade if self.finalGrade is not None else 'N/A'
         course_name = self.idCourse.nameCourse 
-        student_name = self.idStudent.name  
-        return "Course: %s, Student: %s, Final Grade: %s" % (
+        student_name = self.username.username  
+        return "Course: %s, Username: %s, Final Grade: %s" % (
             course_name, student_name, finalGrade_display
         )
+"""

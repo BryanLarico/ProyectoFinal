@@ -13,7 +13,8 @@ import { FormsModule } from '@angular/forms'; // Importar FormsModule para ngMod
 export class BookGradesComponent implements OnInit {
   courses: any[] = [];
   overallAverage: number = 0; 
-
+  semester: number = 1;
+  
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
@@ -21,9 +22,22 @@ export class BookGradesComponent implements OnInit {
   }
 
   loadCourses(): void {
+    this.semester = parseInt(localStorage.getItem('semester') || '1', 10);
+    const coursesPromises: Promise<any>[] = [];
     const apiUrl = 'http://127.0.0.1:8000/api/courses/';
-    this.http.get(apiUrl).subscribe((data: any) => {
-      this.courses = data.map((course: any) => ({ ...course, grade: null })); // Inicializar la nota
+  
+    for (let semester = this.semester; semester >= 1; semester--) {
+      const url = `${apiUrl}semester/${semester}`;
+      coursesPromises.push(this.http.get(url).toPromise());
+    }
+  
+    Promise.all(coursesPromises).then((results) => {
+      this.courses = results.flatMap((data: any) => 
+        data.map((course: any) => ({ ...course, grade: null }))
+      );
+      console.log('Cursos actuales y anteriores: ',this.courses);
+    }).catch(error => {
+      console.error('Error loading courses:', error);
     });
   }
 

@@ -13,13 +13,15 @@ export class AuthService {
   private apiGrades = 'http://127.0.0.1:8000/api/unitreports/';
   private apiLogout = 'http://127.0.0.1:8000/api/logout/';
   private apiCourses = 'http://127.0.0.1:8000/api/courses/';
-  
+  private apiCoursesFinalGrades = 'http://127.0.0.1:8000/api/coursesGradesStudent/';
+  user: string = "";
+
   constructor(private http: HttpClient) {}
 
   login(userData: UserLogin): Observable<any> {
     return this.http.post<{ refresh: string, access: string, user_type: string, usuario_teacher: boolean }>(this.apiUrlLogin, userData).pipe(
       tap(response => {
-        console.log('Login response:', response); // Depuración
+        console.log('Login auth:', response); // Depuración
 
         if (response && response.access && response.refresh) {
           this.setTokens(response.access, response.refresh);
@@ -46,6 +48,19 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}coursesGradesStudent/`, courseGradesStudent);
   }
 
+  updateCourseGrades(courseGradesId: number, data: any): Observable<any> {
+    const url = `${this.apiCoursesFinalGrades}${courseGradesId}/`;
+    return this.http.put(url, data);
+  }
+
+  enviarUser(user: string){
+    this.user = user;
+  }
+
+  recibirUser(){
+    return this.user;
+  }
+
   // Métodos para obtener los tokens desde localStorage
   private getAccessToken(): string | null {
     return localStorage.getItem('access_token');
@@ -65,6 +80,11 @@ export class AuthService {
 
   signup(userData: UserData): Observable<any> {
     return this.http.post(this.apiUrlSignUP, userData);
+  }
+
+  getIdUser(userName: number): Observable<any> {
+    const url = `http://127.0.0.1:8000/api/unitreports/username/${userName}`;
+    return this.http.get(url);
   }
 
   createUnitReport(unitReport: UnitReport): Observable<any> {

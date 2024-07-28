@@ -17,6 +17,8 @@ import { firstValueFrom } from 'rxjs';
 export default class SignupComponent implements OnInit{
   courses: Course[] = [];
   coursesViewed: Course[] = [];
+  userId: string='';
+  iD: number = 0;
   register = {
     username: '',
     email: '',
@@ -34,7 +36,9 @@ export default class SignupComponent implements OnInit{
   constructor(private authService: AuthService, private http: HttpClient){
   }
 
-  ngOnInit(): void {} 
+  ngOnInit(): void {
+    
+  } 
 
   registerUser(){
     this.authService.signup(this.register).subscribe(
@@ -42,6 +46,8 @@ export default class SignupComponent implements OnInit{
         alert('User ' + this.register.username + ' created')
         localStorage.setItem('semester', this.register.semester.toString());
         console.log(this.register.semester);
+        this.userId = response.username;
+        this.getUserIdByUsername(this.userId);
         this.getCourses();
         this.createUnitReportsForSemester();
         console.log(this.register.username);
@@ -51,29 +57,39 @@ export default class SignupComponent implements OnInit{
     )
     
   }
-  
+  getUserIdByUsername(username: string): void {
+    this.http.get<{ userId: number, username: string }>(`http://127.0.0.1:8000/api/idUser/user/${username}`)
+      .subscribe(
+        response => {
+          this.iD = response.userId;  // Asigna el userId al atributo iD
+          console.log('User ID:', this.iD);
+        },
+        error => {
+          console.error('Error:', error);
+        }
+      );
+  }
   async createCourseGradesStudents() {
     const currentSemester = this.register.semester;
     try {
       for (let semester: number = 1; semester <= currentSemester; semester++) {
         const courses: Course[] = await firstValueFrom(this.authService.getCoursesBySemester(semester));
         this.coursesViewed = courses;
-        
+  
         for (const course of this.coursesViewed) {
-          console.log(this.coursesViewed);
           const courseGradesStudent: CourseGradesStudent = {
             idCourseGradesStudent: 0, 
             idCourse: course.idCourse,
-            username: this.register.username,
+            username: this.iD.toString(), // Usa el ID del usuario aquí
             finalGrade: null, 
           };
-          console.log('Prueba de courseGradesStudent: ',courseGradesStudent);
+          console.log('Prueba de courseGradesStudent: ', courseGradesStudent);
           this.authService.createCourseGradesStudent(courseGradesStudent).subscribe(
-          (response) => console.log('CourseGrades created:', response),
-          (error) => {
-            console.log('Error creating CourseGrades:', error);
-            console.log(courseGradesStudent); 
-          }
+            (response) => console.log('CourseGrades created:', response),
+            (error) => {
+              console.log('Error creating CourseGrades:', error);
+              console.log(courseGradesStudent); 
+            }
           );
         }
       }

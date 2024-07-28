@@ -1,127 +1,180 @@
-/* Reset básico */
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Open+Sans|Roboto');
+
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
 }
 
-/* Estilo del contenedor de la tabla */
+body {
+    background: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    height: 100vh; /* Asegura que el body ocupe el 100% de la altura de la ventana */
+    padding: 20px; /* Agrega un padding alrededor del contenido para evitar que esté pegado a los bordes */
+    box-sizing: border-box; /* Incluye el padding en el tamaño total del contenedor */
+}
+
 .table-container {
-  max-width: 1500px;
-  margin: 20px auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    max-width: 100%; /* Limita el ancho del contenedor al 80% del espacio disponible */
+    overflow-x: auto; /* Permite el desplazamiento horizontal si es necesario */
+    margin: 20px 0; /* Agrega márgenes arriba y abajo del contenedor de la tabla */
+    padding: 20px; /* Agrega padding interno al contenedor para separación */
+    background: #ffffff; /* Color de fondo para el contenedor de la tabla */
+    border-radius: 8px; /* Redondea las esquinas del contenedor */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Agrega una sombra ligera al contenedor */
 }
 
-/* Estilo de la tabla */
 table {
-  width: 100%;
-  border-collapse: collapse;
+    width: 100%; /* Ajusta el ancho de la tabla para que ocupe el 100% del contenedor */
+    border-collapse: collapse; /* Colapsa los bordes de la tabla */
+    background: #b2a1a1; /* Color de fondo para las celdas de la tabla */
 }
 
-/* Encabezado de la tabla */
 thead {
-  background-color: #003366; /* Azul oscuro */
-  color: #ffffff;
+    background: #2d5072; /* Color de fondo para los encabezados */
+    color: #fff; /* Color del texto para los encabezados */
 }
 
 thead th {
-  padding: 15px;
-  text-align: center;
-  border-bottom: 4px solid #004080; /* Borde inferior azul más claro */
+    padding: 10px; /* Reduce el padding en los encabezados */
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300; /* Reduce el peso de la fuente */
+    text-transform: uppercase;
+    font-size: 12px; /* Reduce el tamaño de la fuente en los encabezados */
 }
 
 thead th.highlight {
-  background-color: #004080; /* Azul más claro para las celdas de porcentaje y nota */
+    background-color: #4f6a86; /* Color de fondo específico para los encabezados destacados */
 }
 
-/* Estilo de las filas del cuerpo de la tabla */
+/* Estilos para ajustar el ancho de las columnas de porcentajes y notas */
+td, th {
+    padding: 4px; /* Reduce el padding en las celdas */
+}
+
+td.percentage, th.percentage {
+    width: 2%; /* Reduce el ancho de las celdas para porcentajes */
+}
+
+td.note, th.note {
+    width: 12%; /* Ajusta el ancho de las celdas para notas */
+}
+
+td.total-percentage, th.total-percentage,
+td.total-points, th.total-points {
+    width: 2%; /* Reduce el ancho de las celdas para porcentaje acumulado y puntaje acumulado */
+}
+
 tbody tr {
-  border-bottom: 1px solid #ddd; /* Línea divisoria entre filas */
-}
-
-tbody td {
-  padding: 12px;
-  text-align: center;
-  border-right: 1px solid #ddd; /* Línea divisoria vertical */
-}
-
-tbody td.highlight {
-  background-color: #f0f8ff; 
+    background-color: #fff; /* Color de fondo para las filas del cuerpo */
 }
 
 tbody tr:nth-child(even) {
-  background-color: #f9f9f9; /* Color de fondo alterno */
+    background-color: #f5f5f5; /* Color de fondo para las filas pares */
 }
 
 tbody tr:hover {
-  background-color: #e0f7fa; /* Color de fondo al pasar el cursor sobre una fila */
+    background-color: #e0e0e0; /* Color de fondo para las filas al pasar el cursor */
 }
 
-/* Estilo para la última columna sin borde derecho */
-td:last-child, th:last-child {
-  border-right: none;
+td {
+    text-align: center; /* Centra el texto en las celdas */
+    vertical-align: middle; /* Alinea verticalmente el texto */
+    font-size: 12px; /* Reduce el tamaño de la fuente en las celdas */
 }
 
-/* Estilo para los porcentajes */
-span.percentage {
-  color: #003366; /* Azul oscuro */
-  font-weight: bold;
+.course-name {
+    font-weight: bold;
 }
 
-/* Estilo de los campos de entrada */
-.small-input {
-  width: 60px; /* Ajusta el tamaño de los campos de entrada */
-  padding: 4px;
-  font-size: 14px;
+.percentage-container, .note-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Contenedor de botones y enlaces */
+.percentage-container .percentage {
+    font-size: 10px; /* Reduce el tamaño de la fuente en los porcentajes */
+    font-weight: bold;
+    color: #333;
+}
+
+.note-container input {
+    width: 60px; /* Reduce el ancho de los campos de entrada */
+    padding: 3px; /* Reduce el padding interno en los campos de entrada */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 10px; /* Reduce el tamaño de la fuente en los campos de entrada */
+}
+
+.total-percentage, .total-points {
+    font-weight: bold;
+    font-size: 12px; /* Reduce el tamaño de la fuente en los totales */
+}
+
 .button-container {
-  display: flex;
-  justify-content: center; /* Centra los elementos horizontalmente */
-  gap: 20px; /* Añade espacio entre los botones y el enlace */
-  margin: 20px 0; /* Añade margen arriba y abajo */
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background: #fff;
+    border-top: 1px solid #ddd;
+    gap: 15px; /* Reduce el espacio entre los botones */
 }
 
-/* Estilo del botón */
-.calculate-button {
-  display: block;
-  width: 20%; /* Ajuste del ancho completo */
-  padding: 15px;
-  background-color: #003366; /* Azul oscuro */
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  text-align: center;
-  transition: background-color 0.3s ease;
+.button-container {
+    display: flex;
+    justify-content: center; /* Centra los botones horizontalmente */
+    padding: 15px;
+    background: #fff;
+    border-top: 1px solid #ddd;
+    gap: 10px; /* Reduce el espacio entre los botones */
 }
 
-.calculate-button:hover {
-  background-color: #002244; /* Azul más oscuro al pasar el cursor */
+.calculate-button, .logout, .share-link {
+    padding: 8px 16px; /* Ajusta el padding en los botones */
+    border: none;
+    border-radius: 4px;
+    background: #2d5072;
+    color: #fff;
+    font-size: 14px; /* Ajusta el tamaño de la fuente en los botones */
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-/* Estilo del enlace */
+.calculate-button:hover, .logout:hover, .share-link:hover {
+    background: #597794;
+}
+
+.logout {
+    background: #2d5072;
+}
+
 .share-link {
-  color: #003366; /* Azul oscuro */
-  text-decoration: none;
-  font-size: 16px;
-  display: block; /* Hace que el enlace ocupe toda la línea */
-  text-align: center; /* Centra el texto del enlace */
-  padding: 15px;
-  border: 2px solid #003366; /* Añade un borde del mismo color que el texto */
-  border-radius: 8px; /* Redondea las esquinas del borde */
-  background-color: #fff; /* Fondo blanco para destacarlo */
-  width: 20%; /* Ajuste del ancho completo */
+    background: transparent;
+    color: #2d5072;
+    text-decoration: none;
+    padding: 8px;
+    font-size: 14px; /* Ajusta el tamaño de la fuente en el enlace */
 }
 
 .share-link:hover {
-  text-decoration: none; /* Elimina el subrayado en el hover */
-  color: #002244; /* Azul más oscuro al pasar el cursor */
-  background-color: #f0f0f0; /* Cambia el fondo a un gris claro para el efecto hover */
-  border-color: #002244; /* Cambia el color del borde al pasar el cursor */
+    text-decoration: underline;
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    thead th, tbody td {
+        padding: 4px; /* Reduce el padding en pantallas pequeñas */
+    }
+
+    .button-container {
+        flex-direction: column;
+        gap: 10px;
+    }
 }

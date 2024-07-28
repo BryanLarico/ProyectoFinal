@@ -86,7 +86,7 @@
 
         <div class="form-buttons text-center">
             <button type="button" class="btn btn-secondary" (click)="resetForm()">Cancelar</button>
-            <button type="submit" class="btn btn-primary">{{ isEditing ? 'Actualizar' : 'Agregar' }} Course</button>
+            <button type="submit" class="btn btn-primary">{{ isEditing ? 'Actualizar' : 'Agregar' }} Curso</button>
         </div>
     </form>
 
@@ -145,22 +145,3 @@
         });
     });
 </script>
-<!--  
-export interface Course {
-    idCourse: number;
-    nameCourse: string;
-    credit: number;
-    prerequisite: number;
-    semester: number;
-    laboratory: string | null;
-    hoursTeory: number | null;
-    hoursPractice: number | null;
-    p1: number;
-    p2: number;
-    p3: number;
-    e1: number;
-    e2: number;
-    e3: number;
-    status: boolean;
-}
--->

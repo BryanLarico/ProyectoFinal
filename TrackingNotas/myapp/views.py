@@ -32,6 +32,7 @@ from .serializers import (
 
 class UserRegister(APIView):
     permission_classes = [AllowAny]
+
     def post(self, request, *args, **kwargs):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -40,11 +41,17 @@ class UserRegister(APIView):
             courses = Course.objects.filter(semester=semester)
             for course in courses:
                 UnitReport.objects.create(username=user, idCourse=course)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            response_data = {
+                'userId': user.id,
+                'username': user.username,
+                'email': user.email,
+                'semester': user.semester,
+            }
+            return Response(response_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     def get(self, request):
         return Response({'error': 'GET method not allowed'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-        
 class UserLogin(APIView):
     permission_classes = [AllowAny]
 
@@ -77,6 +84,21 @@ class UserLogout(APIView):
             print(str(e))
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+
+class UserByUsernameAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, username, *args, **kwargs):
+        try:
+            user = User.objects.get(username=username)
+            response_data = {
+                'userId': user.id,
+                'username': user.username,
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        
 class UserEdit(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -140,7 +162,6 @@ class UserViewSet(viewsets.ModelViewSet):
     #permission_classes = (IsAuthenticated,)
 """
 class CourseListCreateAPIView(generics.ListCreateAPIView):
-    #Por ahora
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     permission_classes = [AllowAny]
@@ -164,12 +185,42 @@ class CourseGradesStudentListCreateAPIView(generics.ListCreateAPIView):
     queryset = CourseGradesStudent.objects.all()
     serializer_class = CourseGradesStudentSerializer
     #permission_classes = [IsAuthenticated]
+    def update(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+class CourseGradesStudentByUserDetailAPIView(generics.ListAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = CourseGradesStudentSerializer
+    def get_queryset(self):
+        username = self.kwargs['username']
+        return CourseGradesStudent.objects.filter(username__username=username)
 
 class CourseGradesStudentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [AllowAny]
     queryset = CourseGradesStudent.objects.all()
     serializer_class = CourseGradesStudentSerializer
     #permission_classes = [IsAuthenticated]
+
+class CourseGradesStudentViewSet(viewsets.ModelViewSet):
+    queryset = CourseGradesStudent.objects.all()
+    serializer_class = CourseGradesStudentSerializer
+
+    def update(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
 class StudentListCreateAPIView(generics.ListCreateAPIView):
     queryset = Student.objects.all()

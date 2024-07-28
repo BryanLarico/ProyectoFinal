@@ -16,11 +16,39 @@
   </div>
   <p class="description">Tracking() es tu asistente académico inteligente</p>
   <div class="login-form">
-    <input [(ngModel)]="input.username" placeholder="Username" class="input-field"><br>
-    <input [(ngModel)]="input.password" type="password" placeholder="Password" class="input-field"><br>
-    <button (click)="loginUser()" class="login-button">Iniciar Sesión</button>
-    <a routerLink="/signup" >Registrarse</a>
-    <!--<button (click)="registerUser()" class="register-button">Registrarse</button>-->
+    <form (ngSubmit)="loginUser(loginForm)" #loginForm="ngForm">
+      <input 
+        [(ngModel)]="input.username" 
+        name="username" 
+        placeholder="Username" 
+        class="input-field" 
+        required
+        #username="ngModel"
+      ><br>
+      <div *ngIf="username.invalid && (username.dirty || username.touched)" class="error-message">
+        El campo de usuario es obligatorio.
+      </div>
+      <input 
+        [(ngModel)]="input.password" 
+        name="password" 
+        type="password" 
+        placeholder="Password" 
+        class="input-field" 
+        required
+        #password="ngModel"
+      ><br>
+      <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error-message">
+        El campo de contraseña es obligatorio.
+      </div>
+      <button 
+        type="submit" 
+        class="login-button" 
+        [disabled]="loginForm.invalid"
+      >
+        Iniciar Sesión
+      </button>
+      <a routerLink="/signup" class="login-link">Registrarse</a>
+    </form>
   </div>
 </div>
 <footer class="pie-pagina">
@@ -28,7 +56,7 @@
       <div class="box">
           <figure>
               <a href="#">
-                  <img src="/assets/LogoUnsa.png" alt="Logo UnsaShop">
+                  <!--<img src="/assets/LogoUnsa.png" alt="Logo UnsaShop">-->
               </a>
           </figure>
       </div>

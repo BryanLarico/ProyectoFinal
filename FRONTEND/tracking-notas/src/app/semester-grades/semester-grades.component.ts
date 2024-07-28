@@ -16,17 +16,20 @@ import { Router } from '@angular/router';
 export class SemesterGradesComponent implements OnInit {
   courses: any[] = [];
   courseGrades: { [key: number]: any } = {};
-  acumFila: number[] = [];
-  acumFilaPunt: number[] = [];
+  acumFila: { acumPercentage: number; totalPercentage: number }[] = [];
+  acumFilaPunt: { acumPunt: number; totalPoints: number }[] = [];
   semester: number = 1;
-  username: string = '';
+  username: string = "";
+  iduser: number = 0;
 
-  constructor(private authService: AuthService, private http: HttpClient, private router: Router){
+  constructor(private authService: AuthService, private http: HttpClient, private router: Router) {
   }
+
   ngOnInit(): void {
     this.semester = parseInt(localStorage.getItem('semester') || '1', 10);
     this.username = localStorage.getItem('username') || '';
-    console.log('Username from localStorage:', this.username); // Verificar el username
+    console.log('Username from localStorage: ', this.username);
+    this.authService.enviarUser(this.username);
     if (!this.username) {
       console.error('Username is not set in localStorage');
       return;
@@ -37,7 +40,7 @@ export class SemesterGradesComponent implements OnInit {
   loadCourse(): void {
     console.log('Semestre del usuario: ', this.semester);
     this.authService.getCoursesBySemester(this.semester).subscribe((data: any) => {
-      console.log('Datos de cursos recibidos: ',data);
+      console.log('Datos de cursos recibidos: ', data);
       this.courses = data.filter((course: any) => course.semester === this.semester);
       this.loadGrades();
     });
@@ -46,8 +49,7 @@ export class SemesterGradesComponent implements OnInit {
   sendGradesHTML(): void {
     console.log('Datos de courseGrades antes de guardar:', this.courseGrades);
     for (let i in this.courseGrades) {
-      console.log('Indice: ', i)
-      //const unitReport = this.courseGrades[grade];
+      console.log('Indice: ', i);
       const unitReport = this.courseGrades[i];
       if (unitReport.idUnitReport) { // Verifica que `idUnitReport` esté definido
         this.authService.updateGrades(unitReport.idUnitReport, unitReport).subscribe(
@@ -62,70 +64,94 @@ export class SemesterGradesComponent implements OnInit {
     }
   }
 
-  
- loadGrades(): void {
-  const apiGradesUrl = `http://127.0.0.1:8000/api/unitreports/username/${this.username}/`;
-  this.http.get<any[]>(apiGradesUrl).subscribe(
+  loadGrades(): void {
+    const apiGradesUrl = `http://127.0.0.1:8000/api/unitreports/username/${this.username}/`;
+    this.http.get<any[]>(apiGradesUrl).subscribe(
       (data) => {
-          console.log('Datos de calificaciones recibidos:', data);
-          data.forEach((unitReport: any) => {
-              if (!this.courseGrades[unitReport.idCourse]) {
-                  this.courseGrades[unitReport.idCourse] = {
-                      idUnitReport: unitReport.idUnitReport,
-                      eval_cont1: unitReport.eval_cont1 || 0,
-                      parcial1: unitReport.parcial1 || 0,
-                      eval_cont2: unitReport.eval_cont2 || 0,
-                      parcial2: unitReport.parcial2 || 0,
-                      eval_cont3: unitReport.eval_cont3 || 0,
-                      parcial3: unitReport.parcial3 || 0,
-                  };
-                console.log('Datos enviados: ', this.courseGrades);
-              } else {
-                  console.log(`Duplicate course ID: ${unitReport.idCourse}`);
-              }
-          });
+        console.log('Datos de calificaciones recibidos:', data);
+        data.forEach((unitReport: any) => {
+          if (!this.courseGrades[unitReport.idCourse]) {
+            this.courseGrades[unitReport.idCourse] = {
+              idUnitReport: unitReport.idUnitReport,
+              eval_cont1: unitReport.eval_cont1 || 0,
+              parcial1: unitReport.parcial1 || 0,
+              eval_cont2: unitReport.eval_cont2 || 0,
+              parcial2: unitReport.parcial2 || 0,
+              eval_cont3: unitReport.eval_cont3 || 0,
+              parcial3: unitReport.parcial3 || 0,
+            };
+            console.log('Datos enviados: ', this.courseGrades);
+          } else {
+            console.log(`Duplicate course ID: ${unitReport.idCourse}`);
+          }
+        });
       },
       (error) => {
-          console.error('Error al cargar las calificaciones:', error);
+        console.error('Error al cargar las calificaciones:', error);
       }
-  );
-}
-
-
-averageGrades() {
-  this.acumFila = []; 
-  for (let course of this.courses) {
-    const courseGrades = this.courseGrades[course.idCourse] || {
-      eval_cont1: 0, parcial1: 0,
-      eval_cont2: 0, parcial2: 0,
-      eval_cont3: 0, parcial3: 0
-    };
-    let acumPercentage = 0;
-    acumPercentage += this.prom(courseGrades.eval_cont1, course.e1);
-    console.log(acumPercentage);
-    acumPercentage += this.prom(courseGrades.parcial1, course.p1);
-    acumPercentage += this.prom(courseGrades.eval_cont2, course.e2);
-    acumPercentage += this.prom(courseGrades.parcial2, course.p2);
-    acumPercentage += this.prom(courseGrades.eval_cont3, course.e3);
-    acumPercentage += this.prom(courseGrades.parcial3, course.p3);
-    this.acumFila.push(acumPercentage);
+    );
   }
-  this.averageGradesPunt();
-}
 
-  prom(percentage: number, grades: number){
+  averageGrades() {
+    this.acumFila = [];
+    for (let course of this.courses) {
+      const courseGrades = this.courseGrades[course.idCourse] || {
+        eval_cont1: 0, parcial1: 0,
+        eval_cont2: 0, parcial2: 0,
+        eval_cont3: 0, parcial3: 0
+      };
+      let acumPercentage = 0;
+      let totalPercentage = 0;
+
+      if (courseGrades.eval_cont1 > 0) {
+        acumPercentage += this.prom(courseGrades.eval_cont1, course.e1);
+        totalPercentage += course.e1;
+      }
+      if (courseGrades.parcial1 > 0) {
+        acumPercentage += this.prom(courseGrades.parcial1, course.p1);
+        totalPercentage += course.p1;
+      }
+      if (courseGrades.eval_cont2 > 0) {
+        acumPercentage += this.prom(courseGrades.eval_cont2, course.e2);
+        totalPercentage += course.e2;
+      }
+      if (courseGrades.parcial2 > 0) {
+        acumPercentage += this.prom(courseGrades.parcial2, course.p2);
+        totalPercentage += course.p2;
+      }
+      if (courseGrades.eval_cont3 > 0) {
+        acumPercentage += this.prom(courseGrades.eval_cont3, course.e3);
+        totalPercentage += course.e3;
+      }
+      if (courseGrades.parcial3 > 0) {
+        acumPercentage += this.prom(courseGrades.parcial3, course.p3);
+        totalPercentage += course.p3;
+      }
+
+      this.acumFila.push({
+        acumPercentage,
+        totalPercentage
+      });
+    }
+    this.averageGradesPunt();
+  }
+
+  prom(percentage: number, grades: number) {
     return percentage * grades / 20;
   }
 
-  averageGradesPunt(){
+  averageGradesPunt() {
     this.acumFilaPunt = [];
-    let acumPunt = 0;
-    for(let acum of this.acumFila){
-      acumPunt = acum / 5;
-      this.acumFilaPunt.push(acumPunt);
-
+    for (let acum of this.acumFila) {
+      const totalPoints = acum.totalPercentage / 5;
+      const acumPunt = acum.acumPercentage / 5;
+      this.acumFilaPunt.push({
+        acumPunt,
+        totalPoints
+      });
     }
   }
+
   isLocalStorageAvailable(): boolean {
     try {
       const test = '__test__';
@@ -136,6 +162,7 @@ averageGrades() {
       return false;
     }
   }
+
   logout() {
     this.authService.logout().subscribe(
       response => {

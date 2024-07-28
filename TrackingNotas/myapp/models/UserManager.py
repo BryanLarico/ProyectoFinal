@@ -27,13 +27,6 @@ class UserManager(BaseUserManager):
         usuario.set_password(password)
         usuario.save(using=self._db)
         return usuario
-    """
-    def create_superuser(self, username, email, password=None):
-        #extra_fields.setdefault('is_staff', True)
-        #extra_fields.setdefault('is_superuser', True)
-
-        return self.create_user(username, email, password)
-    """
     
     def create_total_user(self, email, username, user_type, name, dni, password=None):
         if not email:

@@ -1,0 +1,169 @@
+/* Estilos para el contenedor principal */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Estilos para el encabezado */
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 150px;
+  height: auto;
+}
+
+.title {
+  font-size: 2.5em;
+  margin: 10px 0;
+}
+
+.title-text {
+  color: #333;
+}
+
+.title-symbol {
+  color: #a22525; /* Color principal del título */
+}
+
+.subtitle {
+  font-size: 1.5em;
+  color: #555;
+}
+
+.description {
+  font-size: 1.1em;
+  color: #666;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Estilos para el formulario de registro */
+.register-form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.input-field {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.register-button, .login-link-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #aa2e2e; /* Color de fondo del botón */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  text-align: center;
+  display: block;
+  text-decoration: none; /* Quitar subrayado en el enlace */
+}
+
+.register-button:hover, .login-link-button:hover {
+  background-color: #ed4f4f; /* Color de fondo al pasar el mouse */
+}
+
+/* Estilos para el enlace de inicio de sesión */
+.login-link {
+  display: block;
+  margin-top: 10px;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
+
+/* Estilos para el pie de página */
+.pie-pagina {
+  background-color: #84332a; /* Rojo apagado */
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+}
+
+.grupo-1 {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.box {
+  flex: 1;
+  padding: 10px;
+}
+
+.box img {
+  max-width: 100px;
+  height: auto;
+}
+
+.box h2 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.box p {
+  font-size: 0.9em;
+  color: #ddd; /* Color del texto en el pie de página */
+}
+
+.red-social {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.red-social a {
+  color: #fff;
+  font-size: 1.5em;
+  text-decoration: none;
+}
+
+.red-social a:hover {
+  color: #f39c12; /* Color al pasar el mouse */
+}
+
+.grupo-2 {
+  margin-top: 10px;
+}
+
+.grupo-2 small {
+  font-size: 0.9em;
+}
+.login-link {
+  width: 100%;
+  color: #003366; /* Azul oscuro */
+  text-decoration: none;
+  font-size: 16px;
+  display: inline-block;
+  text-align: center;
+  margin-top: 20px; /* Aumenta el espacio superior para separarlo del botón */
+  padding: 10px 15px; /* Añade relleno para hacerlo más visible */
+  border: 2px solid #003366; /* Añade un borde del mismo color que el texto */
+  border-radius: 4px; /* Redondea las esquinas del borde */
+  background-color: #fff; /* Fondo blanco para destacarlo */
+}
+
+.login-link:hover {
+  text-decoration: none; /* Elimina el subrayado en el hover */
+  color: #002244; /* Azul más oscuro al pasar el cursor */
+  background-color: #f0f0f0; /* Cambia el fondo a un gris claro para el efecto hover */
+  border-color: #002244; /* Cambia el color del borde al pasar el cursor */
+}

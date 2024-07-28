@@ -13,7 +13,7 @@ from .views import (
     UserEdit, UserCreateApiView, UserListApiView,
     UserUpdateApiView, UserDeleteApiView,
     UserDetailApiView, CustomTokenObtainPairSerializer,
-    CustomTokenObtainPairView,
+    CustomTokenObtainPairView, CourseGradesStudentByUserDetailAPIView,
     CareerListCreateAPIView, CareerDetailAPIView,
     CourseListCreateAPIView, CourseDetailAPIView,
     EventListCreateAPIView, EventDetailAPIView,
@@ -25,6 +25,7 @@ from .views import (
     UnitReportListCreateAPIView, UnitReportDetailAPIView,
     UnitReportByStudentAPIView, CourseBySemesterAPIView,
     CourseGradesStudentListCreateAPIView, CourseGradesStudentDetailAPIView,
+    UserByUsernameAPIView,
 )
 
 schema_view = get_schema_view(
@@ -49,15 +50,10 @@ urlpatterns = [
     path('logout/', UserLogout.as_view(), name='user-logout'),
     path('edit/', UserEdit.as_view(), name='user-edit'),
     path('profile/', UserDetail.as_view(), name='user-detail'),
+    path('idUser/user/<str:username>', UserByUsernameAPIView.as_view(), name='user-by-username'),
     path('list/', UserListApiView.as_view(), name='user-list'),
-    # path('careerView/', careerView),
-    #path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    #path('auth/', ObtainAuthToken.as_view()),
     
-    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),  # Documentación de la API
-    
-    #path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    #path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),  
     path('careers/', CareerListCreateAPIView.as_view(), name='career-list-create'),
     path('careers/<int:pk>/', CareerDetailAPIView.as_view(), name='career-detail'),
 
@@ -69,11 +65,13 @@ urlpatterns = [
 
     path('coursesGradesStudent/', CourseGradesStudentListCreateAPIView.as_view(), name='course-grades-student-list-create'),
     path('coursesGradesStudent/<int:pk>/', CourseGradesStudentDetailAPIView.as_view(), name='course-grades-student-detail'),
+    path('coursesGradesStudent/user/<str:username>/', CourseGradesStudentByUserDetailAPIView.as_view(), name='courses-grades-student-by-user'),
     
     # URLs para UnitReport
     path('unitreports/', UnitReportListCreateAPIView.as_view(), name='unitreport-list-create'),
     path('unitreports/<int:pk>/', UnitReportDetailAPIView.as_view(), name='unitreport-detail'),
     path('unitreports/username/<str:username>/', UnitReportByStudentAPIView.as_view(), name='unitreport-by-username'),    
+    
     # URLs para Student
     path('students/', StudentListCreateAPIView.as_view(), name='student-list-create'),
     path('students/<int:pk>/', StudentDetailAPIView.as_view(), name='student-detail'),
@@ -97,6 +95,4 @@ urlpatterns = [
     # URLs para Teacher
     path('teachers/', TeacherListCreateAPIView.as_view(), name='teacher-list-create'),
     path('teachers/<int:pk>/', TeacherDetailAPIView.as_view(), name='teacher-detail'),
-
-    # path('report/', report_view, name='report-view'),
 ]

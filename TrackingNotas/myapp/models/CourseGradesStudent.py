@@ -22,12 +22,3 @@ class CourseGradesStudent(models.Model):
         settings.AUTH_USER_MODEL, related_name='course_modified_grades_students',
         on_delete=models.SET_NULL, null=True, 
         blank=True)
-"""
-    def __str__(self):
-        finalGrade_display = self.finalGrade if self.finalGrade is not None else 'N/A'
-        course_name = self.idCourse.nameCourse 
-        student_name = self.username.username  
-        return "Course: %s, Username: %s, Final Grade: %s" % (
-            course_name, student_name, finalGrade_display
-        )
-"""

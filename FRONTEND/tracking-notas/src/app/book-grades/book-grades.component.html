@@ -14,13 +14,13 @@
         <td>{{ course.idCourse }}</td>
         <td>{{ course.credit }}</td>
         <td>
-          <input class="small-input" type="number" [(ngModel)]="course.grade">
+          <input class="small-input" type="number" [(ngModel)]="course.finalGrade">
         </td>
       </tr>
     </tbody>
-    <button class="calculate-button" (click)="calculateOverallAverage()">Calcular</button><br>
-    <label>Promedio General: {{ overallAverage }}</label><br>
-    <a href="../semester-grades" class="">Promedio de Semestre</a>
   </table>
-  
+  <button class="calculate-button" (click)="calculateOverallAverage()">Calcular</button><br>
+  <label>Promedio General: {{ overallAverage }}</label><br>
+  <button class="calculate-button" (click)="saveGrades()">Guardar Notas</button><br>
+  <a href="../semester-grades" class="share-link">Promedio de Semestre</a>
 </div>

@@ -1,0 +1,8 @@
+{
+  "routes": [
+    "/book-grades",
+    "/login",
+    "/semester-grades",
+    "/signup"
+  ]
+}

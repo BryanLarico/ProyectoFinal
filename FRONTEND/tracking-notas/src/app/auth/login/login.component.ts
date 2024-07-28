@@ -28,7 +28,6 @@ export class LoginComponent implements OnInit {
 
   loginUser(loginForm: NgForm) {
     if (loginForm.invalid) {
-      // Aquí puedes agregar lógica para manejar la presentación de mensajes de error o retroalimentación al usuario
       console.log('Formulario inválido');
       return;
     }
@@ -39,7 +38,6 @@ export class LoginComponent implements OnInit {
         console.log('ID de user en Login', response);
         
         if (typeof window !== 'undefined') {
-          // Accede a localStorage solo en el entorno del navegador
           localStorage.setItem('username', this.input.username);
           localStorage.setItem('userId', this.userId);
           localStorage.setItem('isTeacher', response.usuario_teacher);

@@ -28,23 +28,32 @@ export default class SignupComponent implements OnInit{
     dni: '',
     usuario_activo: true,
     usuario_teacher: false,
-    
-    //is_staff: true,
-    //is_superuser: true,
   }  
 
-  constructor(private authService: AuthService, private http: HttpClient){
+  constructor(private authService: AuthService, private http: HttpClient) {}
+
+  ngOnInit(): void {}
+  
+  isLocalStorageAvailable(): boolean {
+    try {
+      const test = 'test';
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
-
-  ngOnInit(): void {
-    
-  } 
-
-  registerUser(){
+  
+  registerUser() {
     this.authService.signup(this.register).subscribe(
       response => {
-        alert('User ' + this.register.username + ' created')
-        localStorage.setItem('semester', this.register.semester.toString());
+        alert('User ' + this.register.username + ' created');
+        
+        if (this.isLocalStorageAvailable()) {
+          localStorage.setItem('semester', this.register.semester.toString());
+        }
+  
         console.log(this.register.semester);
         this.userId = response.username;
         this.getUserIdByUsername(this.userId);
@@ -54,14 +63,13 @@ export default class SignupComponent implements OnInit{
         this.createCourseGradesStudents();
       },
       error => console.log('Error:', error)
-    )
-    
+    );
   }
   getUserIdByUsername(username: string): void {
     this.http.get<{ userId: number, username: string }>(`http://127.0.0.1:8000/api/idUser/user/${username}`)
       .subscribe(
         response => {
-          this.iD = response.userId;  // Asigna el userId al atributo iD
+          this.iD = response.userId; 
           console.log('User ID:', this.iD);
         },
         error => {
@@ -80,7 +88,7 @@ export default class SignupComponent implements OnInit{
           const courseGradesStudent: CourseGradesStudent = {
             idCourseGradesStudent: 0, 
             idCourse: course.idCourse,
-            username: this.iD.toString(), // Usa el ID del usuario aquí
+            username: this.iD.toString(),
             finalGrade: null, 
           };
           console.log('Prueba de courseGradesStudent: ', courseGradesStudent);

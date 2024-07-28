@@ -93,6 +93,11 @@
                   </div>
               </td>
               <td>
+                <div class="note-container">
+                    <input class="small-input" [(ngModel)]="courseGrades[course.idCourse].parcial3" type="number" />
+                </div>
+            </td>
+              <td>
                   <div class="total-percentage">
                       {{ acumFila[i]?.acumPercentage || 0 }} / {{ acumFila[i]?.totalPercentage || 0 }} %
                   </div>

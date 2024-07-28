@@ -22,31 +22,42 @@ export class SignupTeacherComponent implements OnInit{
     dni: '',
     usuario_activo: true,
     usuario_teacher: true,
-    
-    //is_staff: true,
-    //is_superuser: true,
   }  
 
-  constructor(private authService: AuthService, private http: HttpClient){
+  constructor(private authService: AuthService, private http: HttpClient) {}
+
+ngOnInit(): void {}
+
+isLocalStorageAvailable(): boolean {
+  try {
+    const test = 'test';
+    localStorage.setItem(test, test);
+    localStorage.removeItem(test);
+    return true;
+  } catch (e) {
+    return false;
   }
+}
 
-  ngOnInit(): void {} 
+registerUser() {
+  console.log(this.register.usuario_teacher);
+  this.authService.signup(this.register).subscribe(
+    response => {
+      alert('User ' + this.register.username + ' created');
 
-  registerUser(){
-    console.log(this.register.usuario_teacher);
-    this.authService.signup(this.register).subscribe(
-      response => {
-        alert('User ' + this.register.username + ' created')
+      if (this.isLocalStorageAvailable()) {
         localStorage.setItem('semester', this.register.semester.toString());
-        localStorage.setItem('isTeacher', this.register.usuario_teacher.toString())
-        console.log(this.register.semester)
-        this.getCourses();
-        this.createUnitReportsForSemester();
-      },
-      error => console.log('Error:', error)
-    )
-    console.log(this.register);
-  }
+        localStorage.setItem('isTeacher', this.register.usuario_teacher.toString());
+      }
+
+      console.log(this.register.semester);
+      this.getCourses();
+      this.createUnitReportsForSemester();
+    },
+    error => console.log('Error:', error)
+  );
+  console.log(this.register);
+}
   getCourses() {
     this.authService.getCoursesBySemester(this.register.semester).subscribe(
       response => {

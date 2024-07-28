@@ -26,22 +26,35 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  isLocalStorageAvailable(): boolean {
+    try {
+      const test = 'test';
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   loginUser(loginForm: NgForm) {
     if (loginForm.invalid) {
+      // Aquí puedes agregar lógica para manejar la presentación de mensajes de error o retroalimentación al usuario
       console.log('Formulario inválido');
       return;
     }
-
+  
     this.authService.login(this.input).subscribe(
       response => {
         this.userId = response.userId;
         console.log('ID de user en Login', response);
-        
-        if (typeof window !== 'undefined') {
+  
+        if (this.isLocalStorageAvailable()) {
+          // Accede a localStorage solo en el entorno del navegador
           localStorage.setItem('username', this.input.username);
           localStorage.setItem('userId', this.userId);
           localStorage.setItem('isTeacher', response.usuario_teacher);
-
+  
           if (response.usuario_teacher) {
             this.router.navigate(['../../create-course']);
           } else {

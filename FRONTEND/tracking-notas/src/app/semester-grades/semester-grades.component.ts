@@ -22,28 +22,38 @@ export class SemesterGradesComponent implements OnInit {
   username: string = "";
   iduser: number = 0;
 
-  constructor(private authService: AuthService, private http: HttpClient, private router: Router) {
-  }
+  constructor(private authService: AuthService, private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
-    this.semester = parseInt(localStorage.getItem('semester') || '1', 10);
-    this.username = localStorage.getItem('username') || '';
-    console.log('Username from localStorage: ', this.username);
-    this.authService.enviarUser(this.username);
-    if (!this.username) {
-      console.error('Username is not set in localStorage');
-      return;
+    if (this.isLocalStorageAvailable()) {
+      this.semester = parseInt(localStorage.getItem('semester') || '1', 10);
+      this.username = localStorage.getItem('username') || '';
+      console.log('Username from localStorage: ', this.username);
+      
+      if (!this.username) {
+        console.error('Username is not set in localStorage');
+        return;
+      }
+
+      this.authService.enviarUser(this.username);
+      this.loadCourse();
+    } else {
+      console.error('localStorage is not available');
     }
-    this.loadCourse();
   }
 
   loadCourse(): void {
     console.log('Semestre del usuario: ', this.semester);
-    this.authService.getCoursesBySemester(this.semester).subscribe((data: any) => {
-      console.log('Datos de cursos recibidos: ', data);
-      this.courses = data.filter((course: any) => course.semester === this.semester);
-      this.loadGrades();
-    });
+    this.authService.getCoursesBySemester(this.semester).subscribe(
+      (data: any) => {
+        console.log('Datos de cursos recibidos: ', data);
+        this.courses = data.filter((course: any) => course.semester === this.semester);
+        this.loadGrades();
+      },
+      (error) => {
+        console.error('Error loading courses:', error);
+      }
+    );
   }
 
   sendGradesHTML(): void {

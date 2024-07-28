@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms'; // Importar FormsModule para ngModel
+import { FormsModule } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 
 @Component({
@@ -15,24 +15,38 @@ export class BookGradesComponent implements OnInit {
   courses: any[] = [];
   overallAverage: number = 0; 
   semester: number = 1;
-  userId = parseInt(localStorage.getItem('userId') || '0', 10);
-  coursesGrades:   { [key: number]: any } = {};
+  userId: number = 0;
+  coursesGrades: { [key: number]: any } = {};
   user: string = '';
   
   constructor(private authService: AuthService, private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.userId = parseInt(localStorage.getItem('userId') || '0', 10);
-    this.user = localStorage.getItem('username') || '';
-    console.log('Usuario desde book: ', this.user);
-    this.userId = parseInt(localStorage.getItem('userId') || '0', 10);
-    console.log('UsuarioID desde book: ', this.userId);
+    if (this.isLocalStorageAvailable()) {
+      this.userId = parseInt(localStorage.getItem('userId') || '0', 10);
+      this.user = localStorage.getItem('username') || '';
+      console.log('Usuario desde book: ', this.user);
+      console.log('UsuarioID desde book: ', this.userId);
+    }
     this.loadCourses();
     this.loadGrades();
   }
 
+  isLocalStorageAvailable(): boolean {
+    try {
+      const test = 'test';
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   loadCourses(): void {
-    this.semester = parseInt(localStorage.getItem('semester') || '1', 10);
+    if (this.isLocalStorageAvailable()) {
+      this.semester = parseInt(localStorage.getItem('semester') || '1', 10);
+    }
     const coursesPromises: Promise<any>[] = [];
     const apiUrl = 'http://127.0.0.1:8000/api/courses/';
     
@@ -45,7 +59,7 @@ export class BookGradesComponent implements OnInit {
       this.courses = results.flatMap((data: any) => 
         data.map((course: any) => ({ ...course, grade: null }))
       );
-      console.log('Cursos actuales y anteriores: ',this.courses);
+      console.log('Cursos actuales y anteriores: ', this.courses);
     }).catch(error => {
       console.error('Error loading courses:', error);
     });

@@ -54,15 +54,8 @@
 
 #   WebApp con Django
 
-[![License][license]][license-file]
-[![Downloads][downloads]][releases]
-[![Last Commit][last-commit]][releases]
-
-[![Debian][Debian]][debian-site]
 [![Git][Git]][git-site]
 [![GitHub][GitHub]][github-site]
-[![Vim][Vim]][vim-site]
-[![Java][Java]][java-site]
 
 ##  Tipo de Sistema
     Se trata de una aplicación web construida con el framework Django 5 y Angular para frontend, que permita la visualización de notas y avance del semestre.
@@ -77,16 +70,10 @@
 ##  Modelo de datos
     El modelo de datos esta conformado por las siguientes entidades.
 
-    - Curso: En esta entidad se almacena la información de los cursos o asignaturas que se imparten en una Escuela Profesional. Ejemplo: Programación Web 2, III semestre, 02 horas teóricas, 04 horas de laboratorio, etc..
-    -   Profesor : En esta entidad se almacena los datos de los profesores que se responsabilizan del avance académico en la enseñanza. Ejemplo: Richart Escobedo, rescobedoq@unsa.edu.pe, etc.
-    -   Carrera : En esta entidad se almacena las carreras de la institucion educativa.Ejemplo: Ingenieria de Sistemas, etc.
-    -   Calificacion por curso de los estudiantes: En esta entidad se almacena las notas finales de los estudiantes. Ejemplo: Programacion Web 2, 1702122, 20193200, 18, etc.
-    -   Eventos : En esta entidad se almacena las particiones de notas de un curso y las equivalencias en porcentaje. Ejemplo: 1, 1702122, 6, 15.0, 20.0, etc.
-    -   Calificación : En esta entidad se almacena el promedio del curso. Ejemplo: Juan Perez - Semestre I, idEvent, progreso, progreso examen, promedio.
-    -   Registro : En esta entidad se almacena los registros de estudiantes a un determinado semestre. Ejemplo: Juan Perez, Semestre I, etc.
-    -   Seccion : En esta entidad se almacena los grupos por curso y el limite de estudiantes. Ejemplo: PW2, C, 25, etc.
-    -   Estudiante : En esta entidad se almacena la informacion del estudiante. Ejemplo: jperez@unsa.edu.pe, contraseña, Ingenieria de Sistemas, numero de celular, etc.
-    -   Reporte de semestre : En esta entidad se almacena las notas por unidad en evaluaciones continuas y examenes. 
+    - Curso: En esta entidad se almacena la información de los cursos o asignaturas que se imparten en una Escuela Profesional. Ejemplo: Programación Web 2,Semestre III, 02 horas teóricas, 04 horas de laboratorio, etc..
+    -   Calificacion por curso de los estudiantes: En esta entidad se almacena las notas finales de los estudiantes en el semestre. Ejemplo: Programacion Web 2, 1702122, 20193200, 18, etc.
+    -   Reporte de unidad : En esta entidad se almacena las notas por semestre en evaluaciones continuas y examenes. 
+    -   Administrador de usuarios : En esta entidad se crea los usuarios tipo estudiante o profesor.
 
 ![Texto alternativo](public/Captura%20de%20pantalla%202024-07-28%20150459.png)
 
@@ -131,7 +118,7 @@ Predeterminado | Descripción |
 ...
 
 ##  Diagrama Entidad-Relación
-![Diagrama ](public/imagen.jpg)
+![Diagrama ](public/image.jpg)
 
 ##  Administración con Django
     Se muestran los pasos realizados para crear el Proyecto, la aplicación, creacion de modelos, migraciones y habilitación del panel de administración en Django.
@@ -320,6 +307,7 @@ Predeterminado | Descripción |
     #admin.site.register(UserManager, User)
     ```
     ![Django admin] ()
+
 7. **Configurar el Proyecto Django**
     ```bash
     En settings.py
@@ -477,21 +465,14 @@ Predeterminado | Descripción |
     AUTH_USER_MODEL = 'myapp.User'
     ```
 
-
 ##  CRUD - Core Business - Clientes finales
     El núcleo de negocio del sistema de inscripciones tiene valor de aceptación para los cliente finales (alumnos) radica en realizar el proceso de inscripción propiamente, que empieza desde que:
     1. El alumno se registra.
     2. El alumno inicia sesion.
-    3. El alumno ingresa sus notas.
-    4. El alumno guarda su promedio.
+    3. Se autentica el alumno y se obtiene token JWT.
+    4. El alumno gestiona sus cursos.
+    5. El alumno guarda su promedio.
     6. El alumno cierra sesión.
-<div class="row">
-<img class="col-md-6" src="public/Captura%20de%20pantalla%202024-07-28%20151005.png" alt="Registro de usuario" width="300" />
-<img class="col-md-6" src="public/Captura de pantalla 2024-07-28 151626.png" alt="Inicio de sesion de usuario" width="300" />
-</div>
-<!--![Registro de usuario](public/Captura%20de%20pantalla%202024-07-28%20151005.png)-->
-
-![Ingreso de notas](public/Captura%20de%20pantalla%202024-07-28%20151205.png)
 
     A continuación se muestran las actividades realizadas para su construcción:
 
@@ -513,51 +494,50 @@ Predeterminado | Descripción |
     ng new book-grades #notas por curso
     ng new semester-grades #notas generales
     ```
-    
+3. **Visualizacion de la web**
+    Pagina de Inicio: 
+<div class="row">
+<img class="col-md-6" src="public/Imagen de WhatsApp 2024-07-28 a las 23.44.36_bc35aaa7.jpg" alt="Inicio" width="300" />
+<img class="col-md-6" src="public/Captura de pantalla 2024-07-29 001605.png" alt="Registro" width="300" />
+<img class="col-md-6" src="public/Imagen de WhatsApp 2024-07-28 a las 20.42.32_39e22083.jpg" alt="Inicio de sesion de usuario" width="300" />
+</div>
+<!--![Registro de usuario](public/Captura%20de%20pantalla%202024-07-28%20151005.png)-->
+    Despues de iniciar sesion:
+<div class="row">
+<img class="col-md-6" src="public/Captura de pantalla 2024-07-29 001731.png" alt="Notas" width="300" />
+<img class="col-md-6" src="public/Captura de pantalla 2024-07-29 001836.png" alt="Promedio general" width="300" />
+</div>
 
 ##  Servicios mediante una API RESTful
+
     Se ha creado una aplicación que pondra a disposición cierta información para ser consumida por otros clientes HTTP.
-    1. GET : Con el método get se devolverá la lista de cursos, grupos y horarios establecidos para que el alumno sobre todo vea esta información en cualquier otro medio. En formato JSON. 
-    2. POST : Con este método se enviara el código del alumno y se devolvera sus inscripciones. En formato JSON.
-    
-    Ejemplo: Prueba en Página web, aplicación móvil, PDF, etc.
-    Se especifican los pasos para crear el servicio RestFul
-    ...
+    1. GET : Con el método get se devolverá informacion del usuario para listar o detallar elementos. En formato JSON. 
+    2. POST : Con este método se enviara datos al servidor, generalmente para crear nuevos cursos. En formato JSON.
 
-##  Operaciones asíncronas AJAX
-    Se propone el uso de AJAX para realizar la asignación de carga académica a los docentes que estan registrados. Esta operación la realizará el usuario operador encargado por el DAISI.
-    Se muestran los pasos necesarios a realizar.
-    ....
+##  Investigación: serializer.py, urls.py
+1. **Estructura de la API y serializacion de datos**
+    Utilizando Django y Django REST Framework (DRF) para construir nuestra API, lo que permite convertir datos en representaciones JSON y viceversa:
+    -Usuarios: Creación, edición, autenticación, y gestión de perfiles de usuario.
+    -Entidades Académicas: Incluye modelos como carreras, cursos, estudiantes, profesores, y registros de calificaciones.
+    -Informes y Eventos: Gestión de informes de unidades y eventos académicos.
 
-##  Investigación: Email, Upload.
-    - 
+2. **Autenticacion y seguridad**
+    Implementamos la autenticacion basada en JWT (JSON Web Tokens) para asegurar que solo los usuarios autenticados puedan acceder a ciertos recursos. Esto se gestiona mediante vistas y serializars personalizados, como 'CustomTokenObtainPairSerializar', que maneja el proceso de generación de tokens y validacion de credenciales de usuarios.
+
 
 Github del proyecto: https://github.com/BryanLarico/ProyectoFinal.git
 
-URL en :
-
-URL Playlist YouTube.
-Producción de un PlayList en Youtube explicando cada una de los requerimientos.
-Video 01 - Sistema - Requisitos.
-Video 02 - Modelo de datos - DD - DER.
-etc…
+URL en Render: https://2xqwwg3c-4200.brs.devtunnels.ms/home 
 
 
-## REFERENCIAS
--   
+URL Playlist YouTube. [![YouTube][YouTube]][youtube-playlist]
+Producción de un PlayList en YouTube explicando cada uno de los requerimientos:
 
-#
+- Video 01 - Presentación de la página web
+- Video 02 - Registro de usuario
+- Video 03 - Inicio de sesión
+- Video 04 - Calcular y guardar notas
 
-[license]: https://img.shields.io/github/license/rescobedoq/pw2?label=rescobedoq
-[license-file]: https://github.com/rescobedoq/pw2/blob/main/LICENSE
-
-[downloads]: https://img.shields.io/github/downloads/rescobedoq/pw2/total?label=Downloads
-[releases]: https://github.com/rescobedoq/pw2/releases/
-
-[last-commit]: https://img.shields.io/github/last-commit/rescobedoq/pw2?label=Last%20Commit
-
-[Debian]: https://img.shields.io/badge/Debian-D70A53?style=for-the-badge&logo=debian&logoColor=white
-[debian-site]: https://www.debian.org/index.es.html
 
 [Git]: https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white
 [git-site]: https://git-scm.com/
@@ -565,20 +545,9 @@ etc…
 [GitHub]: https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white
 [github-site]: https://github.com/
 
-[Vim]: https://img.shields.io/badge/VIM-%2311AB00.svg?style=for-the-badge&logo=vim&logoColor=white
-[vim-site]: https://www.vim.org/
+[Youtube]: https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white
+[youtube-playlist]: https://www.youtube.com/playlist?list=PLV61dGfGJpZB4rNfF65R5O_BybVF7HzGQ
 
-[Java]: https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white
-[java-site]: https://docs.oracle.com/javase/tutorial/
-
-
-[![Debian][Debian]][debian-site]
+[![YouTube][YouTube]][youtube-playlist]
 [![Git][Git]][git-site]
 [![GitHub][GitHub]][github-site]
-[![Vim][Vim]][vim-site]
-[![Java][Java]][java-site]
-
-
-[![License][license]][license-file]
-[![Downloads][downloads]][releases]
-[![Last Commit][last-commit]][releases]
